@@ -1,0 +1,198 @@
+{
+  "app": {
+    "title": "The Library",
+    "subtitle": "A solo roleplaying game",
+    "meta_description": "Explore your character's memories through books found in a mental library."
+  },
+  "start": {
+    "intro": "Between dusty shelves and candlelight, the pages of your past await. Do you dare open the first book?",
+    "new_game": "New Game",
+    "continue_game": "Continue Game",
+    "saved_games": "Saved Games",
+    "no_name": "Unnamed",
+    "load_game_aria": "Load game of {name}"
+  },
+  "phases": {
+    "prologue": "Prologue",
+    "chapter_1": "Chapter I",
+    "chapter_2": "Chapter II",
+    "chapter_3": "Chapter III",
+    "epilogue_book": "Epilogue — Challenge",
+    "epilogue_action_1": "Epilogue — Action 1",
+    "epilogue_action_2": "Epilogue — Action 2",
+    "epilogue_action_3": "Epilogue — Action 3",
+    "epilogue_final": "Epilogue — Final Roll",
+    "completed": "Completed"
+  },
+  "attributes": {
+    "body": "Body",
+    "mind": "Mind",
+    "social": "Social"
+  },
+  "attribute_breakdown": {
+    "base": "Base",
+    "background": "Background",
+    "support": "Support"
+  },
+  "outcomes": {
+    "hit": "Full Success",
+    "weak_hit": "Partial Success",
+    "miss": "Failure"
+  },
+  "sidebar": {
+    "title": "The Library",
+    "subtitle": "Journal of a lost soul",
+    "current_phase": "Current Phase",
+    "character": "Character",
+    "no_character": "No character yet...",
+    "no_game": "No active game",
+    "attributes": "Attributes",
+    "overcome_points": "Overcome Points",
+    "progress": "Progress",
+    "view_journal": "View Journal",
+    "back_to_start": "Back to Start",
+    "open_journal_aria": "Open journal",
+    "back_aria": "Back to start"
+  },
+  "prologue": {
+    "title": "Prologue",
+    "subtitle": "The threshold of the library. The character takes shape, the world comes alive.",
+    "setting_title": "Setting",
+    "genre_label": "Genre",
+    "genre_placeholder": "— Choose genre —",
+    "epoch_label": "Epoch",
+    "epoch_placeholder": "— Choose epoch —",
+    "or": "or",
+    "random": "Random",
+    "character_title": "Your Character",
+    "name_label": "Name",
+    "name_placeholder": "The name that will echo through these pages...",
+    "desc_label": "Description",
+    "desc_placeholder": "Who you are, how you look, what you carry...",
+    "attributes_title": "Base Attributes",
+    "attributes_help": "Each attribute starts at 1. Your background and support will increase throughout the game.",
+    "loading_attributes": "Loading attributes...",
+    "first_page_title": "First Page",
+    "first_page_help": "Write your first journal entry. How did you arrive at the library? What do you seek among its shelves?",
+    "first_page_placeholder": "Blank pages await your story...",
+    "start_adventure": "Begin Adventure ›"
+  },
+  "chapter": {
+    "title": "Chapter {roman}",
+    "subtitle": "A volume awaits on the shelves. Its pages hold lost memories.",
+    "discover_title": "Discover the Book",
+    "discover_btn": "Discover Book",
+    "pre_journal_title": "Journal — The Event",
+    "pre_journal_help": "What event unfolds before you? Describe what the book's pages evoke in your memory.",
+    "pre_journal_placeholder": "The pages reveal a forgotten memory...",
+    "continue": "Continue ›",
+    "roll_title": "Dice Roll",
+    "roll_help": "Choose an attribute and roll the dice. Each attribute can only be used once across chapters.",
+    "roll_btn": "Roll Dice",
+    "post_journal_title": "Journal — The Outcome",
+    "post_journal_help": "How was the event resolved? Describe the outcome based on the dice result.",
+    "post_journal_placeholder": "Fate has spoken...",
+    "next_chapter": "Chapter {roman} ›",
+    "go_epilogue": "Go to Epilogue ›"
+  },
+  "epilogue": {
+    "title": "Epilogue",
+    "subtitle": "Memories converge. The past demands to be faced.",
+    "book_title": "The Epilogue Book",
+    "discover_epilogue_btn": "Discover Epilogue Book",
+    "pre_journal_title": "Journal — The Challenge",
+    "pre_journal_help": "You have discovered the final book. What ultimate challenge lies before you? Describe what the pages evoke before facing your actions.",
+    "pre_journal_placeholder": "The epilogue pages reveal a challenge that demands everything from you...",
+    "action_title": "Epilogue — Action {num} of 3",
+    "action_section_title": "Action {num} of 3",
+    "action_choose_attr": "Choose an attribute for this action:",
+    "support_title": "Support (optional, once only)",
+    "support_help": "You may add the Support value of an attribute to this roll. Only available once during the entire epilogue.",
+    "support_used": "Support has already been used in this epilogue.",
+    "no_support": "No attribute has support available.",
+    "no_support_btn": "No support",
+    "roll_btn": "Roll Dice",
+    "select_attr_first": "Select an attribute before rolling.",
+    "accumulated_points": "Accumulated Overcome Points",
+    "last_entry_title": "Your last entry",
+    "post_roll_title": "Journal — Action Result",
+    "post_roll_help": "Describe how you used your attributes to try to overcome the obstacle and the result of your actions.",
+    "post_roll_placeholder": "With determination, you try to overcome what fate has placed before you...",
+    "final_title": "Epilogue — Final Roll",
+    "final_section_title": "Final Roll",
+    "final_help": "The sum of your actions faces destiny. Your accumulated score against 2d10.",
+    "your_score": "Your Score",
+    "final_roll_btn": "Final Roll",
+    "post_final_title": "Journal — The Ending",
+    "post_final_help": "The final chapter of your story. What have you discovered? What have you left behind?",
+    "post_final_placeholder": "The pen writes the last words of this story...",
+    "view_summary": "View Summary ›"
+  },
+  "completed": {
+    "title": "Story Completed",
+    "subtitle": "The pages have closed. The story is etched into the library.",
+    "overcome_points": "{score} overcome points",
+    "export_btn": "Export",
+    "new_game_btn": "New Game",
+    "full_journal_title": "Full Journal",
+    "no_journal": "No journal entries were written.",
+    "roll_log_title": "Roll Log",
+    "no_rolls": "No rolls recorded.",
+    "confirm_new_game": "Start a new game? The current game will be lost."
+  },
+  "book": {
+    "mysterious_volume": "A mysterious volume",
+    "color": "Color",
+    "binding": "Binding",
+    "smell": "Scent",
+    "interior": "Interior"
+  },
+  "dice": {
+    "action_score": "Action Score",
+    "modifier_applied": "Modifier applied: {modifier}",
+    "final_roll_label": "Final Roll",
+    "overcome_label": "Overcome Points",
+    "you_label": "You"
+  },
+  "outcome_explanation": {
+    "chapter_hit": "Full success. Your Background increases by 1.",
+    "chapter_weak_hit": "Partial success. Your Support increases by 1.",
+    "chapter_miss": "Failure. Your Background decreases by 1.",
+    "epilogue_hit": "Full success. You gain 2 overcome points.",
+    "epilogue_weak_hit": "Partial success. You gain 1 overcome point.",
+    "epilogue_miss": "Failure. You gain no overcome points from this action.",
+    "final_hit": "Your score surpassed both fate dice. The story ends in triumph.",
+    "final_weak_hit": "You surpassed one of the dice. The story concludes in shades of grey.",
+    "final_miss": "Fate was stronger. The story ends in defeat."
+  },
+  "journal": {
+    "title": "Journal",
+    "close_aria": "Close journal",
+    "empty_prompt": "The pages await to be written...",
+    "no_entries": "No journal entries yet.",
+    "write_before_continue": "Write in the journal before continuing."
+  },
+  "modal": {
+    "exit_title": "Leave the game?",
+    "exit_text": "Your progress is saved automatically with each action.",
+    "save_exit": "Save & Exit",
+    "exit_no_save": "Exit without Saving",
+    "cancel": "Cancel"
+  },
+  "errors": {
+    "create_game": "Error creating game: {message}",
+    "recover_game": "Could not recover game: {message}",
+    "load_oracle": "Could not load oracle tables: {message}",
+    "load_game": "Could not load game: {message}",
+    "choose_genre": "Choose a genre for your story.",
+    "choose_epoch": "Choose an epoch for your story.",
+    "need_name": "Your character needs a name.",
+    "need_description": "Add a description for your character.",
+    "need_journal": "Write in the journal before continuing."
+  },
+  "language": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "app": {
+    "title": "La Biblioteca",
+    "subtitle": "Un juego de rol en solitario",
+    "meta_description": "Explora las memorias de tu personaje a través de los libros de una biblioteca mental."
+  },
+  "start": {
+    "intro": "Entre estantes polvorientos y la luz de las velas, las páginas de tu pasado esperan ser leídas. ¿Te atreves a abrir el primer libro?",
+    "new_game": "Nueva Partida",
+    "continue_game": "Continuar Partida",
+    "saved_games": "Partidas Guardadas",
+    "no_name": "Sin nombre",
+    "load_game_aria": "Cargar partida de {name}"
+  },
+  "phases": {
+    "prologue": "Prólogo",
+    "chapter_1": "Capítulo I",
+    "chapter_2": "Capítulo II",
+    "chapter_3": "Capítulo III",
+    "epilogue_book": "Epílogo — Desafío",
+    "epilogue_action_1": "Epílogo — Acción 1",
+    "epilogue_action_2": "Epílogo — Acción 2",
+    "epilogue_action_3": "Epílogo — Acción 3",
+    "epilogue_final": "Epílogo — Tirada Final",
+    "completed": "Completado"
+  },
+  "attributes": {
+    "body": "Cuerpo",
+    "mind": "Mente",
+    "social": "Social"
+  },
+  "attribute_breakdown": {
+    "base": "Base",
+    "background": "Trasfondo",
+    "support": "Apoyo"
+  },
+  "outcomes": {
+    "hit": "Éxito Total",
+    "weak_hit": "Éxito Parcial",
+    "miss": "Fracaso"
+  },
+  "sidebar": {
+    "title": "La Biblioteca",
+    "subtitle": "Diario de un alma perdida",
+    "current_phase": "Fase Actual",
+    "character": "Personaje",
+    "no_character": "Sin personaje aún...",
+    "no_game": "Sin partida activa",
+    "attributes": "Atributos",
+    "overcome_points": "Puntos Superados",
+    "progress": "Progreso",
+    "view_journal": "Ver Diario",
+    "back_to_start": "Volver al Inicio",
+    "open_journal_aria": "Abrir diario",
+    "back_aria": "Volver al inicio"
+  },
+  "prologue": {
+    "title": "Prólogo",
+    "subtitle": "El umbral de la biblioteca. El personaje toma forma, el mundo cobra vida.",
+    "setting_title": "Ambientación",
+    "genre_label": "Género",
+    "genre_placeholder": "— Elige género —",
+    "epoch_label": "Época",
+    "epoch_placeholder": "— Elige época —",
+    "or": "o",
+    "random": "Aleatorio",
+    "character_title": "Tu Personaje",
+    "name_label": "Nombre",
+    "name_placeholder": "El nombre que resonará en estas páginas...",
+    "desc_label": "Descripción",
+    "desc_placeholder": "Quién eres, cómo te ves, qué cargas contigo...",
+    "attributes_title": "Atributos Base",
+    "attributes_help": "Cada atributo comienza en 1. Tu trasfondo y apoyo se irán sumando a lo largo del juego.",
+    "loading_attributes": "Cargando atributos...",
+    "first_page_title": "Primera Página",
+    "first_page_help": "Escribe tu primera entrada de diario. ¿Cómo llegaste a la biblioteca? ¿Qué buscas entre sus estantes?",
+    "first_page_placeholder": "Las páginas en blanco esperan tu historia...",
+    "start_adventure": "Comenzar Aventura ›"
+  },
+  "chapter": {
+    "title": "Capítulo {roman}",
+    "subtitle": "Un volumen aguarda en los estantes. Sus páginas guardan memorias perdidas.",
+    "discover_title": "Descubrir el Libro",
+    "discover_btn": "Descubrir Libro",
+    "pre_journal_title": "Diario — El Evento",
+    "pre_journal_help": "¿Qué evento se presenta ante ti? Describe lo que las páginas del libro evocan en tu memoria.",
+    "pre_journal_placeholder": "Las páginas revelan una memoria olvidada...",
+    "continue": "Continuar ›",
+    "roll_title": "Tirada de Dados",
+    "roll_help": "Elige un atributo y lanza los dados. Cada atributo solo puede usarse una vez en los capítulos.",
+    "roll_btn": "Lanzar Dados",
+    "post_journal_title": "Diario — El Desenlace",
+    "post_journal_help": "¿Cómo se resolvió el evento? Describe el desenlace según el resultado de los dados.",
+    "post_journal_placeholder": "El destino ha hablado...",
+    "next_chapter": "Capítulo {roman} ›",
+    "go_epilogue": "Ir al Epílogo ›"
+  },
+  "epilogue": {
+    "title": "Epílogo",
+    "subtitle": "Las memorias convergen. El pasado exige ser afrontado.",
+    "book_title": "El Libro del Epílogo",
+    "discover_epilogue_btn": "Descubrir Libro del Epílogo",
+    "pre_journal_title": "Diario — El Desafío",
+    "pre_journal_help": "Has descubierto el último libro. ¿Qué desafío final se presenta ante ti? Describe lo que las páginas evocan antes de afrontar tus acciones.",
+    "pre_journal_placeholder": "Las páginas del epílogo revelan un desafío que exige todo de ti...",
+    "action_title": "Epílogo — Acción {num} de 3",
+    "action_section_title": "Acción {num} de 3",
+    "action_choose_attr": "Elige un atributo para esta acción:",
+    "support_title": "Apoyo (opcional, solo una vez)",
+    "support_help": "Puedes añadir el valor de Apoyo de un atributo a esta tirada. Solo disponible una vez en todo el epílogo.",
+    "support_used": "El apoyo ya ha sido usado en este epílogo.",
+    "no_support": "Ningún atributo tiene apoyo disponible.",
+    "no_support_btn": "Sin apoyo",
+    "roll_btn": "Lanzar Dados",
+    "select_attr_first": "Selecciona un atributo antes de lanzar.",
+    "accumulated_points": "Puntos Superados Acumulados",
+    "last_entry_title": "Tu última entrada",
+    "post_roll_title": "Diario — Resultado de la Acción",
+    "post_roll_help": "Describe cómo has usado tus atributos para intentar superar el obstáculo y el resultado de tus acciones.",
+    "post_roll_placeholder": "Con determinación, intentas superar lo que el destino ha puesto ante ti...",
+    "final_title": "Epílogo — Tirada Final",
+    "final_section_title": "Tirada Final",
+    "final_help": "La suma de tus acciones se enfrenta al destino. Tu puntuación acumulada contra 2d10.",
+    "your_score": "Tu Puntuación",
+    "final_roll_btn": "Tirada Final",
+    "post_final_title": "Diario — El Desenlace",
+    "post_final_help": "El capítulo final de tu historia. ¿Qué has descubierto? ¿Qué has dejado atrás?",
+    "post_final_placeholder": "La pluma escribe las últimas palabras de esta historia...",
+    "view_summary": "Ver Resumen ›"
+  },
+  "completed": {
+    "title": "Historia Completada",
+    "subtitle": "Las páginas se han cerrado. La historia queda grabada en la biblioteca.",
+    "overcome_points": "{score} puntos superados",
+    "export_btn": "Exportar",
+    "new_game_btn": "Nueva Partida",
+    "full_journal_title": "Diario Completo",
+    "no_journal": "No se escribieron entradas de diario.",
+    "roll_log_title": "Registro de Tiradas",
+    "no_rolls": "Sin tiradas registradas.",
+    "confirm_new_game": "¿Comenzar una nueva partida? Se perderá la partida actual."
+  },
+  "book": {
+    "mysterious_volume": "Un volumen misterioso",
+    "color": "Color",
+    "binding": "Encuadernación",
+    "smell": "Olor",
+    "interior": "Interior"
+  },
+  "dice": {
+    "action_score": "Puntuación de Acción",
+    "modifier_applied": "Modificador aplicado: {modifier}",
+    "final_roll_label": "Tirada Final",
+    "overcome_label": "Puntos Superados",
+    "you_label": "Tú"
+  },
+  "outcome_explanation": {
+    "chapter_hit": "Éxito total. Tu Trasfondo aumenta en 1.",
+    "chapter_weak_hit": "Éxito parcial. Tu Apoyo aumenta en 1.",
+    "chapter_miss": "Fracaso. Tu Trasfondo disminuye en 1.",
+    "epilogue_hit": "Éxito total. Ganas 2 puntos superados.",
+    "epilogue_weak_hit": "Éxito parcial. Ganas 1 punto superado.",
+    "epilogue_miss": "Fracaso. No ganas puntos superados en esta acción.",
+    "final_hit": "Tu puntuación superó a ambos dados del destino. La historia termina en triunfo.",
+    "final_weak_hit": "Superaste uno de los dados. La historia concluye con claroscuros.",
+    "final_miss": "El destino fue más fuerte. La historia termina en derrota."
+  },
+  "journal": {
+    "title": "Diario",
+    "close_aria": "Cerrar diario",
+    "empty_prompt": "Las páginas esperan ser escritas...",
+    "no_entries": "Aún no hay entradas de diario.",
+    "write_before_continue": "Escribe en el diario antes de continuar."
+  },
+  "modal": {
+    "exit_title": "¿Salir de la partida?",
+    "exit_text": "Tu progreso se guarda automáticamente con cada acción.",
+    "save_exit": "Guardar y Salir",
+    "exit_no_save": "Salir sin Guardar",
+    "cancel": "Cancelar"
+  },
+  "errors": {
+    "create_game": "Error al crear la partida: {message}",
+    "recover_game": "No se pudo recuperar la partida: {message}",
+    "load_oracle": "No se pudieron cargar las tablas del oráculo: {message}",
+    "load_game": "No se pudo cargar la partida: {message}",
+    "choose_genre": "Elige un género para tu historia.",
+    "choose_epoch": "Elige una época para tu historia.",
+    "need_name": "Tu personaje necesita un nombre.",
+    "need_description": "Añade una descripción para tu personaje.",
+    "need_journal": "Escribe en el diario antes de continuar."
+  },
+  "language": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  }
+}
