@@ -644,19 +644,6 @@ function renderPrologueScreen() {
       </div>
     </div>
 
-    <!-- Attribute configuration -->
-    <div class="content-section">
-      <h3 class="section-title">${escHtml(t('prologue.attributes_title'))}</h3>
-      <div class="card">
-        <p class="text-muted text-sm" style="margin-bottom:var(--space-4);">
-          ${escHtml(t('prologue.attributes_help'))}
-        </p>
-        <div id="attr-config-list">
-          ${renderAttributeConfigRows()}
-        </div>
-      </div>
-    </div>
-
     <!-- Journal entry -->
     <div class="content-section">
       <h3 class="section-title">${escHtml(t('prologue.first_page_title'))}</h3>
@@ -684,21 +671,6 @@ function renderPrologueScreen() {
   $('#btn-start-adventure', screen).addEventListener('click', onSubmitPrologue);
   $('#select-genre', screen).addEventListener('change', updateSettingPreview);
   $('#select-epoch', screen).addEventListener('change', updateSettingPreview);
-}
-
-function renderAttributeConfigRows() {
-  const game = State.getGame();
-  const attrs = game?.attributes || [];
-  if (!attrs.length) {
-    return `<p class="text-muted text-sm">${escHtml(t('prologue.loading_attributes'))}</p>`;
-  }
-  return attrs.map(attr => `
-    <div class="attribute-row" style="margin-bottom:var(--space-2);">
-      <div class="attribute-row-header">
-        <span class="attribute-label">${getAttributeLabel(attr.type)}</span>
-        <span class="attribute-total">${attr.base_value ?? 1}</span>
-      </div>
-    </div>`).join('');
 }
 
 async function loadOracleTables() {
