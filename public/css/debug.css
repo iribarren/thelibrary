@@ -1,0 +1,80 @@
+/* ============================================================
+   debug.css — Developer debug navigation bar
+   Only loaded on localhost via debug.js (dynamic import).
+   Never referenced in index.html.
+   ============================================================ */
+
+#debug-nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: rgba(12, 8, 24, 0.93);
+  border-top: 2px solid #7b2d8b;
+  backdrop-filter: blur(4px);
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+}
+
+.debug-nav-info {
+  flex: 1;
+  text-align: center;
+  color: #d4a0e0;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.debug-btn {
+  padding: 0.2rem 0.65rem;
+  background: transparent;
+  border: 1px solid #7b2d8b;
+  border-radius: 4px;
+  color: #d4a0e0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.debug-btn:hover:not(:disabled) {
+  background: rgba(123, 45, 139, 0.4);
+}
+
+.debug-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.debug-btn-exit {
+  border-color: #8b3a3a;
+  color: #e08080;
+  margin-left: 0.5rem;
+}
+
+.debug-btn-exit:hover:not(:disabled) {
+  background: rgba(139, 58, 58, 0.4);
+}
+
+/* Debug mode button on start screen — same size as other buttons, subtle styling */
+.debug-mode-btn {
+  margin-top: var(--space-2, 0.5rem);
+  opacity: 0.7;
+}
+
+/* Ensure nav bar doesn't obscure bottom content */
+body:has(#debug-nav-bar) .main-content {
+  padding-bottom: 2.5rem;
+}
+
+/* Never show in print */
+@media print {
+  #debug-nav-bar { display: none; }
+}

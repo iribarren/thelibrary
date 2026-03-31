@@ -11,6 +11,16 @@ import { animateDiceRoll, buildDicePlaceholder } from './dice-animator.js';
 import { t, init as initI18n, getCurrentLocale, setLocale, onLocaleChange } from './i18n.js';
 
 // ============================================================
+// Environment detection
+// ============================================================
+
+function isLocalEnvironment() {
+  const h = window.location.hostname;
+  return h === 'localhost' || h === '127.0.0.1' || h === '::1'
+      || window.location.protocol === 'file:';
+}
+
+// ============================================================
 // Phase → screen mapping
 // ============================================================
 
@@ -479,9 +489,11 @@ function renderStartScreen() {
     continueBtn.style.display = State.hasSavedGame() ? 'flex' : 'none';
   }
   loadGameList();
+  document.dispatchEvent(new CustomEvent('startScreenRendered'));
 }
 
 async function loadGameList() {
+  if (State.isDebugMode()) return;
   const section = document.getElementById('game-list-section');
   const listEl  = document.getElementById('game-list');
   if (!section || !listEl) return;
@@ -1006,6 +1018,7 @@ function onSelectChapterAttribute(btn) {
 }
 
 async function onRollChapter(attribute) {
+  if (State.isDebugMode()) return;
   const btn = document.getElementById('btn-roll-chapter');
   clearMessages('msg-chapter-roll');
   setLoading(btn, true);
@@ -1516,6 +1529,7 @@ function onSelectSupportAttribute(btn) {
 // Epilogue roll button is handled by the global delegated click listener below.
 
 async function onRollEpilogueAction() {
+  if (State.isDebugMode()) return;
   const btn = document.getElementById('btn-roll-epilogue-action');
   if (!_selectedEpilogueAttribute) {
     showError('msg-epilogue-action', t('epilogue.select_attr_first'));
@@ -1577,6 +1591,7 @@ async function onRollEpilogueAction() {
 }
 
 async function onRollEpilogueFinal() {
+  if (State.isDebugMode()) return;
   const btn = document.getElementById('btn-roll-epilogue-final');
   clearMessages('msg-epilogue-final');
   setLoading(btn, true);
@@ -1655,10 +1670,14 @@ async function renderCompletedScreen() {
 
   // Fetch fresh journal entries
   let entries = [];
-  try {
-    entries = await API.fetchJournalEntries(game.id);
-  } catch (err) {
-    console.error('Could not load journal:', err);
+  if (State.isDebugMode()) {
+    entries = game?.journal_entries ?? [];
+  } else {
+    try {
+      entries = await API.fetchJournalEntries(game.id);
+    } catch (err) {
+      console.error('Could not load journal:', err);
+    }
   }
 
   // Find final roll result
@@ -2033,6 +2052,16 @@ async function init() {
   // Load i18n translations before anything else
   await initI18n();
 
+  // Load debug module on localhost only
+  if (isLocalEnvironment()) {
+    try {
+      const dbg = await import('./debug.js');
+      dbg.initDebugMode();
+    } catch (e) {
+      console.warn('Debug module failed to load:', e);
+    }
+  }
+
   // Hydrate persisted state
   State.hydrateFromStorage();
 
@@ -2127,3 +2156,16 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+
+// ============================================================
+// Debug mode exports
+// Internal functions exposed for debug.js only.
+// ============================================================
+export {
+  renderStartScreen,
+  renderPrologueScreen,
+  renderChapterScreen,
+  renderEpilogueScreen,
+  renderCompletedScreen,
+  showScreen,
+};
