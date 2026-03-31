@@ -1,0 +1,1 @@
+- [Frontend debug mode architecture](project_debug_mode.md) — debug.js/app.js split, circular import strategy, which API calls are guarded
