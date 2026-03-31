@@ -489,6 +489,7 @@ function renderStartScreen() {
     continueBtn.style.display = State.hasSavedGame() ? 'flex' : 'none';
   }
   loadGameList();
+  document.dispatchEvent(new CustomEvent('startScreenRendered'));
 }
 
 async function loadGameList() {

@@ -337,22 +337,17 @@ function _exitDebugMode() {
 // ============================================================
 
 function _injectDebugButton() {
-  const startScreen = document.getElementById('screen-start');
-  if (!startScreen?.classList.contains('active')) return;
   if (document.getElementById('btn-debug-mode')) return;
 
   const btn = document.createElement('button');
   btn.id        = 'btn-debug-mode';
-  btn.className = 'btn btn-ghost debug-mode-btn';
-  btn.textContent = '\u2699\uFE0F Debug Mode';
+  btn.className = 'btn btn-secondary btn-full debug-mode-btn';
+  btn.innerHTML = '<span class="btn-text">\u2699\uFE0F Debug Mode</span><span class="btn-spinner"><span class="spinner"></span></span>';
   btn.addEventListener('click', _enterDebugMode);
 
-  // Append after the main action buttons
-  const startButtons = startScreen.querySelector('.start-buttons');
+  const startButtons = document.querySelector('#screen-start .start-buttons');
   if (startButtons) {
     startButtons.appendChild(btn);
-  } else {
-    startScreen.appendChild(btn);
   }
 }
 
@@ -362,8 +357,8 @@ function _injectDebugButton() {
 
 /**
  * Called by app.js on localhost after i18n init.
- * Sets up the MutationObserver that injects the debug button
- * whenever the start screen becomes active.
+ * Listens for the 'startScreenRendered' custom event dispatched
+ * by renderStartScreen() to inject the debug button reliably.
  */
 export function initDebugMode() {
   // Inject debug CSS
@@ -375,12 +370,6 @@ export function initDebugMode() {
     document.head.appendChild(link);
   }
 
-  // Watch for start screen becoming active
-  const startScreen = document.getElementById('screen-start');
-  const target = startScreen ?? document.body;
-  const obs = new MutationObserver(() => _injectDebugButton());
-  obs.observe(target, { attributes: true, attributeFilter: ['class'], subtree: !startScreen });
-
-  // Inject immediately in case start screen is already active
-  _injectDebugButton();
+  // Listen for start screen renders (dispatched by renderStartScreen in app.js)
+  document.addEventListener('startScreenRendered', _injectDebugButton);
 }
