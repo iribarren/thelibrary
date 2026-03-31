@@ -25,6 +25,9 @@ let _state = {
   epilogueActionCount: 0,
 };
 
+// Debug mode flag — session-only, never persisted
+let _debugMode = false;
+
 // Change listeners
 const _listeners = new Set();
 
@@ -110,6 +113,10 @@ export function getOvercomeScore() {
 
 export function isSupportUsed() {
   return _state.game?.support_used ?? false;
+}
+
+export function isDebugMode() {
+  return _debugMode;
 }
 
 /**
@@ -259,6 +266,10 @@ export function setCurrentBook(book) {
 export function clearCurrentBook() {
   _state.currentBook = null;
   _notify();
+}
+
+export function setDebugMode(value) {
+  _debugMode = Boolean(value);
 }
 
 /**
