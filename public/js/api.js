@@ -4,6 +4,8 @@
  * All functions return parsed JSON or throw an ApiError.
  */
 
+import { getAuthToken, getRefreshToken, setAuth, setRefreshToken, clearAuth } from './state.js';
+
 const BASE_URL = 'http://localhost:8080';
 
 // ============================================================
@@ -23,15 +25,26 @@ export class ApiError extends Error {
 // Core fetch helper
 // ============================================================
 
-async function request(method, path, body = null) {
-  const options = {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
+/**
+ * Core fetch helper.
+ * @param {string} method
+ * @param {string} path
+ * @param {object|null} body
+ * @param {boolean} isRetry  — internal flag to prevent infinite refresh loops
+ */
+async function request(method, path, body = null, isRetry = false) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
   };
 
+  // Inject Bearer token if one is present in state
+  const token = getAuthToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const options = { method, headers };
   if (body !== null) {
     options.body = JSON.stringify(body);
   }
@@ -57,6 +70,31 @@ async function request(method, path, body = null) {
     }
   } else {
     responseBody = await response.text();
+  }
+
+  // Handle 401: attempt a silent token refresh once, then retry the original request
+  if (response.status === 401 && !isRetry) {
+    const storedRefreshToken = getRefreshToken();
+    if (storedRefreshToken) {
+      try {
+        const refreshResponse = await fetch(`${BASE_URL}/api/auth/refresh`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ refresh_token: storedRefreshToken }),
+        });
+        if (refreshResponse.ok) {
+          const refreshData = await refreshResponse.json();
+          setAuth(refreshData.token, null);
+          setRefreshToken(refreshData.refresh_token);
+          // Retry original request with the new token
+          return request(method, path, body, true);
+        }
+      } catch {
+        // Refresh network error — fall through and throw original 401
+      }
+      // Refresh failed: clear auth so the UI shows the login prompt
+      clearAuth();
+    }
   }
 
   if (!response.ok) {
@@ -209,4 +247,55 @@ export function saveJournalEntry(gameId, content, bookId = null) {
  */
 export function fetchJournalEntries(gameId) {
   return get(`/api/game/${gameId}/journal`);
+}
+
+// ============================================================
+// Auth endpoints
+// ============================================================
+
+/**
+ * Authenticates with email + password.
+ * @param {string} email
+ * @param {string} password
+ * @returns {{ token: string, refresh_token: string }}
+ */
+export function login(email, password) {
+  return request('POST', '/api/auth/login', { email, password });
+}
+
+/**
+ * Registers a new account.
+ * @param {string} email
+ * @param {string} password
+ * @param {string} passwordConfirmation
+ * @returns {{ token: string, refresh_token: string, user: { id, email, displayName } }}
+ */
+export function register(email, password, passwordConfirmation) {
+  return request('POST', '/api/auth/register', { email, password, passwordConfirmation });
+}
+
+/**
+ * Exchanges a refresh token for a new access token.
+ * @param {string} token
+ * @returns {{ token: string, refresh_token: string }}
+ */
+export function refreshToken(token) {
+  return request('POST', '/api/auth/refresh', { refresh_token: token });
+}
+
+/**
+ * Returns the currently authenticated user's profile.
+ * Requires a valid Bearer token.
+ * @returns {{ id, email, displayName, roles }}
+ */
+export function fetchMe() {
+  return get('/api/auth/me');
+}
+
+/**
+ * Returns the authenticated player's saved game sessions.
+ * @returns {Array<{ id, character_name, genre, epoch, current_phase, created_at, updated_at, is_completed }>}
+ */
+export function fetchPlayerSessions() {
+  return get('/api/player/sessions');
 }

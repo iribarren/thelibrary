@@ -6,6 +6,7 @@
 
 import * as API   from './api.js';
 import * as State from './state.js';
+import * as Auth  from './auth.js';
 import { animateBookReveal } from './book-animator.js';
 import { animateDiceRoll, buildDicePlaceholder } from './dice-animator.js';
 import { t, init as initI18n, getCurrentLocale, setLocale, onLocaleChange } from './i18n.js';
@@ -488,6 +489,8 @@ function renderStartScreen() {
   if (continueBtn) {
     continueBtn.style.display = State.hasSavedGame() ? 'flex' : 'none';
   }
+  // Render the auth bar (login/register or user info + logout)
+  Auth.renderAuthSection(document.getElementById('auth-section'));
   loadGameList();
   document.dispatchEvent(new CustomEvent('startScreenRendered'));
 }
@@ -2065,6 +2068,26 @@ async function init() {
   // Hydrate persisted state
   State.hydrateFromStorage();
 
+  // Silent token refresh: if a refresh token is stored, exchange it for a new access token
+  const storedRefreshToken = State.getRefreshToken();
+  if (storedRefreshToken) {
+    try {
+      const refreshData = await API.refreshToken(storedRefreshToken);
+      State.setAuth(refreshData.token, null);
+      State.setRefreshToken(refreshData.refresh_token);
+      // Fetch user profile to populate the auth bar
+      try {
+        const me = await API.fetchMe();
+        State.setAuth(refreshData.token, me);
+      } catch {
+        // Non-critical — token is valid, we just lack display info
+      }
+    } catch {
+      // Refresh token is stale or invalid; clear it
+      State.clearAuth();
+    }
+  }
+
   // Populate static text from translations
   populateStaticTexts();
 
@@ -2125,6 +2148,27 @@ async function init() {
       const gameId = gameItem.dataset.gameId;
       if (gameId) onLoadGameFromList(gameId);
     }
+    // Auth modal close button
+    if (e.target.closest('#auth-modal-close')) {
+      const modal = document.getElementById('auth-modal');
+      if (modal) {
+        modal.setAttribute('hidden', '');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+    // Auth modal backdrop click (clicking outside the modal content)
+    const authModal = e.target.closest('#auth-modal');
+    if (authModal && !e.target.closest('.auth-modal__content')) {
+      authModal.setAttribute('hidden', '');
+      authModal.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  // Resume a session from the My Sessions screen (dispatched by auth.js)
+  document.addEventListener('auth:resume-session', async (e) => {
+    const { sessionId } = e.detail;
+    if (!sessionId) return;
+    await onLoadGameFromList(sessionId);
   });
 
   // Subscribe to state changes for sidebar

@@ -194,5 +194,29 @@
     "label": "Language",
     "es": "Español",
     "en": "English"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Register",
+    "logout": "Log out",
+    "my_sessions": "My Sessions",
+    "play_as_guest": "Play as guest",
+    "email": "Email",
+    "password": "Password",
+    "password_confirm": "Confirm password",
+    "login_title": "Log in",
+    "register_title": "Create account",
+    "submit_login": "Sign in",
+    "submit_register": "Create account",
+    "no_sessions": "You have no saved sessions.",
+    "resume": "Resume",
+    "loading_sessions": "Loading sessions...",
+    "error_invalid_credentials": "Invalid credentials.",
+    "error_generic": "An error occurred. Please try again.",
+    "error_passwords_mismatch": "Passwords do not match.",
+    "logged_in_as": "Logged in as",
+    "my_sessions_title": "My Sessions",
+    "session_phase": "Phase",
+    "session_created": "Started"
   }
 }

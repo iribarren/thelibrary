@@ -194,5 +194,29 @@
     "label": "Idioma",
     "es": "Español",
     "en": "English"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "my_sessions": "Mis Partidas",
+    "play_as_guest": "Jugar como invitado",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "password_confirm": "Confirmar contraseña",
+    "login_title": "Iniciar sesión",
+    "register_title": "Crear cuenta",
+    "submit_login": "Entrar",
+    "submit_register": "Crear cuenta",
+    "no_sessions": "No tienes partidas guardadas.",
+    "resume": "Continuar",
+    "loading_sessions": "Cargando partidas...",
+    "error_invalid_credentials": "Credenciales incorrectas.",
+    "error_generic": "Ha ocurrido un error. Inténtalo de nuevo.",
+    "error_passwords_mismatch": "Las contraseñas no coinciden.",
+    "logged_in_as": "Conectado como",
+    "my_sessions_title": "Mis Partidas",
+    "session_phase": "Fase",
+    "session_created": "Iniciada"
   }
 }
