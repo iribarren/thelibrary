@@ -1532,3 +1532,232 @@ select.form-control option {
   padding: 0 var(--space-4);
   margin-bottom: var(--space-2);
 }
+
+/* ============================================================
+   AUTH SECTION (Start screen)
+   ============================================================ */
+
+/* Container row: login + register buttons or user info + actions */
+.auth-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+  min-height: 36px; /* reserve space before JS hydrates */
+}
+
+.auth-section--logged-in {
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.auth-section--guest {
+  flex-direction: row;
+}
+
+/* "Logged in as …" label */
+.auth-user-info {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  letter-spacing: 0.03em;
+}
+
+/* Auth buttons inherit .btn .btn-sm — just add a small min-width for comfort */
+.auth-btn {
+  min-width: 110px;
+}
+
+/* ============================================================
+   AUTH MODAL
+   ============================================================ */
+
+/* Outer overlay — reuses .modal-overlay but with a higher z-index
+   to sit above the exit-game modal (z-index 1000) */
+.auth-modal {
+  z-index: 1100;
+}
+
+/* Ensure the hidden attribute hides the overlay */
+.auth-modal[hidden] {
+  display: none !important;
+}
+
+/* Position close button inside the modal card */
+.auth-modal__close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-4);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--fs-md);
+  cursor: pointer;
+  line-height: 1;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.auth-modal__close:hover {
+  color: var(--color-gold);
+}
+
+/* The inner .modal card needs relative positioning for the close button */
+.auth-modal .auth-modal__content {
+  position: relative;
+  max-width: 400px;
+  text-align: left;
+}
+
+/* ============================================================
+   AUTH FORM
+   ============================================================ */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.auth-form__title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.auth-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.auth-form__label {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xs);
+  color: var(--color-text-panel);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-form__input {
+  background: rgba(26, 26, 46, 0.7);
+  border: 1px solid var(--color-border-panel);
+  border-radius: var(--radius-md);
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  padding: var(--space-3) var(--space-4);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+}
+
+.auth-form__input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.auth-form__input:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 2px var(--color-gold-glow);
+}
+
+/* Inline error message */
+.auth-form__error {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  color: var(--color-failure-light);
+  min-height: 1.2em;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ============================================================
+   MY SESSIONS SCREEN (inside auth modal)
+   ============================================================ */
+
+.auth-sessions-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: var(--space-2);
+}
+
+.auth-sessions-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  color: var(--color-gold);
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-2);
+}
+
+.auth-sessions-status,
+.auth-sessions-empty {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Scrollable list of session cards */
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Individual session card */
+.session-card {
+  background: rgba(26, 26, 46, 0.7);
+  border: 1px solid var(--color-border-panel);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.session-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 10px var(--color-gold-glow);
+}
+
+.session-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  color: var(--color-gold-bright);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.session-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.session-card__phase {
+  color: var(--color-text-panel);
+}
+
+.session-card__actions {
+  display: flex;
+  justify-content: flex-end;
+}

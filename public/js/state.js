@@ -8,8 +8,9 @@
 // Storage keys
 // ============================================================
 
-const STORAGE_KEY_GAME_ID    = 'biblioteca_game_id';
-const STORAGE_KEY_GAME_STATE = 'biblioteca_game_state';
+const STORAGE_KEY_GAME_ID      = 'biblioteca_game_id';
+const STORAGE_KEY_GAME_STATE   = 'biblioteca_game_state';
+const STORAGE_KEY_REFRESH_TOKEN = 'biblioteca_refresh_token';
 
 // ============================================================
 // Internal state store
@@ -23,6 +24,9 @@ let _state = {
   rollResult:    null,   // Latest roll result
   // Epilogue tracking (client-side, derived from game state)
   epilogueActionCount: 0,
+  // Auth state — access token lives in memory only
+  authToken:     null,
+  authUser:      null,
 };
 
 // Change listeners
@@ -204,6 +208,25 @@ export function getSavedGameId() {
 }
 
 // ============================================================
+// Auth getters
+// ============================================================
+
+/** Returns the in-memory access token, or null. */
+export function getAuthToken() {
+  return _state.authToken;
+}
+
+/** Returns the authenticated user object, or null. */
+export function getAuthUser() {
+  return _state.authUser;
+}
+
+/** Returns the refresh token from localStorage, or null. */
+export function getRefreshToken() {
+  return localStorage.getItem(STORAGE_KEY_REFRESH_TOKEN);
+}
+
+// ============================================================
 // Setters / Mutators
 // ============================================================
 
@@ -280,9 +303,45 @@ export function resetState() {
     currentBook:         null,
     rollResult:          null,
     epilogueActionCount: 0,
+    authToken:           _state.authToken,    // keep auth across game resets
+    authUser:            _state.authUser,
   };
   _persistGameId(null);
   _notify();
+}
+
+// ============================================================
+// Auth mutators
+// ============================================================
+
+/**
+ * Sets the access token (in memory only) and the authenticated user.
+ * Notifies all state listeners.
+ * @param {string} token
+ * @param {object|null} user
+ */
+export function setAuth(token, user) {
+  _state.authToken = token;
+  _state.authUser  = user;
+  _notify();
+}
+
+/**
+ * Clears all auth state and removes the refresh token from localStorage.
+ */
+export function clearAuth() {
+  _state.authToken = null;
+  _state.authUser  = null;
+  localStorage.removeItem(STORAGE_KEY_REFRESH_TOKEN);
+  _notify();
+}
+
+/**
+ * Persists the refresh token to localStorage.
+ * @param {string} token
+ */
+export function setRefreshToken(token) {
+  localStorage.setItem(STORAGE_KEY_REFRESH_TOKEN, token);
 }
 
 // ============================================================
