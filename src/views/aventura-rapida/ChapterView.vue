@@ -122,14 +122,19 @@ async function onNext() {
     if (nextPhase?.startsWith('chapter_')) {
       // Same route (/aventura-rapida/chapter) — Vue Router won't remount, reset manually
       const match = nextPhase.match(/^chapter_(\d+)$/)
-      chapterNum.value   = match ? parseInt(match[1], 10) : chapterNum.value
-      step.value         = 'book'
-      book.value         = null
-      rollResult.value   = null
-      selectedAttr.value = null
-      preJournal.value   = ''
-      postJournal.value  = ''
-      nextLoading.value  = false
+      chapterNum.value    = match ? parseInt(match[1], 10) : chapterNum.value
+      step.value          = 'book'
+      book.value          = null
+      rollResult.value    = null
+      selectedAttr.value  = null
+      preJournal.value    = ''
+      postJournal.value   = ''
+      bookError.value     = ''
+      preJournalErr.value = ''
+      rollError.value     = ''
+      postJournalErr.value = ''
+      nextLoading.value   = false
+      window.scrollTo(0, 0)
     } else {
       navigateToPhase(nextPhase)
     }
