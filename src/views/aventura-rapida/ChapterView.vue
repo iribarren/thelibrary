@@ -40,7 +40,8 @@ const rollError      = ref('')
 const postJournalErr = ref('')
 
 const game = computed(() => gameStore.game)
-const chapterNum = computed(() => gameStore.currentChapterNumber)
+// Frozen at mount — must not change reactively when the backend advances the phase mid-flow
+const chapterNum = ref(gameStore.currentChapterNumber ?? 1)
 const roman = computed(() => ({ 1: 'I', 2: 'II', 3: 'III' })[chapterNum.value] || chapterNum.value)
 
 onMounted(() => {
@@ -116,7 +117,21 @@ async function onNext() {
     const updatedGame = await API.fetchGame(gameStore.gameId)
     gameStore.setGame(updatedGame)
     gameStore.clearCurrentBook()
-    navigateToPhase(updatedGame.current_phase)
+    const nextPhase = updatedGame.current_phase
+    if (nextPhase?.startsWith('chapter_')) {
+      // Same route (/aventura-rapida/chapter) — Vue Router won't remount, reset manually
+      const match = nextPhase.match(/^chapter_(\d+)$/)
+      chapterNum.value   = match ? parseInt(match[1], 10) : chapterNum.value
+      step.value         = 'book'
+      book.value         = null
+      rollResult.value   = null
+      selectedAttr.value = null
+      preJournal.value   = ''
+      postJournal.value  = ''
+      nextLoading.value  = false
+    } else {
+      navigateToPhase(nextPhase)
+    }
   } catch (err) {
     postJournalErr.value = err.message
     nextLoading.value = false
