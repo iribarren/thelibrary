@@ -114,21 +114,27 @@ async function onNext() {
   nextLoading.value = true
   try {
     await API.saveJournalEntry(gameStore.gameId, postJournal.value.trim(), book.value?.id ?? null)
-    const updatedGame = await API.fetchGame(gameStore.gameId)
+    // Advance chapter via dedicated endpoint (phase transitions on user action, not on roll)
+    const updatedGame = await API.advanceChapter(gameStore.gameId)
     gameStore.setGame(updatedGame)
     gameStore.clearCurrentBook()
     const nextPhase = updatedGame.current_phase
     if (nextPhase?.startsWith('chapter_')) {
       // Same route (/aventura-rapida/chapter) — Vue Router won't remount, reset manually
       const match = nextPhase.match(/^chapter_(\d+)$/)
-      chapterNum.value   = match ? parseInt(match[1], 10) : chapterNum.value
-      step.value         = 'book'
-      book.value         = null
-      rollResult.value   = null
-      selectedAttr.value = null
-      preJournal.value   = ''
-      postJournal.value  = ''
-      nextLoading.value  = false
+      chapterNum.value    = match ? parseInt(match[1], 10) : chapterNum.value
+      step.value          = 'book'
+      book.value          = null
+      rollResult.value    = null
+      selectedAttr.value  = null
+      preJournal.value    = ''
+      postJournal.value   = ''
+      bookError.value     = ''
+      preJournalErr.value = ''
+      rollError.value     = ''
+      postJournalErr.value = ''
+      nextLoading.value   = false
+      window.scrollTo(0, 0)
     } else {
       navigateToPhase(nextPhase)
     }

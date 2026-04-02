@@ -82,6 +82,8 @@ async function onSubmit() {
   loading.value = true
   try {
     const gameId = gameStore.gameId
+    // Save journal BEFORE completing prologue so it records phase = 'prologue'
+    await API.saveJournalEntry(gameId, journal.value.trim(), null)
     const updatedGame = await API.submitPrologue(gameId, {
       character_name:        charName.value.trim(),
       character_description: charDesc.value.trim(),
@@ -89,7 +91,6 @@ async function onSubmit() {
       epoch: epoch.value,
     })
     gameStore.setGame(updatedGame)
-    await API.saveJournalEntry(gameId, journal.value.trim(), null)
     navigateToPhase(updatedGame.current_phase)
   } catch (err) {
     settingError.value = err.message
