@@ -100,6 +100,7 @@ export const submitPrologue     = (gameId, data) => post(`/api/game/${gameId}/pr
 // ── Chapter ────────────────────────────────────────────────────
 export const generateChapterBook = (gameId) => post(`/api/game/${gameId}/chapter/book`, {})
 export const rollChapter         = (gameId, attribute) => post(`/api/game/${gameId}/chapter/roll`, { attribute })
+export const advanceChapter      = (gameId) => post(`/api/game/${gameId}/chapter/advance`, {})
 
 // ── Epilogue ───────────────────────────────────────────────────
 export const generateEpilogueBook = (gameId) => post(`/api/game/${gameId}/epilogue/book`, {})

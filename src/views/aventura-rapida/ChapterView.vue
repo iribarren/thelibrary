@@ -114,7 +114,8 @@ async function onNext() {
   nextLoading.value = true
   try {
     await API.saveJournalEntry(gameStore.gameId, postJournal.value.trim(), book.value?.id ?? null)
-    const updatedGame = await API.fetchGame(gameStore.gameId)
+    // Advance chapter via dedicated endpoint (phase transitions on user action, not on roll)
+    const updatedGame = await API.advanceChapter(gameStore.gameId)
     gameStore.setGame(updatedGame)
     gameStore.clearCurrentBook()
     const nextPhase = updatedGame.current_phase
