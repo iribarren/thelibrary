@@ -4,35 +4,95 @@
 Frontend SPA for "The Library" (La Biblioteca), a solo TTRPG journal game. Part of the `biblioteca` workspace. Backend API is in `../oracles-api/`.
 
 ## Tech Stack
-- Vanilla JavaScript (ES6 modules) — no framework, no build tools, no package manager
-- CSS with custom properties (design tokens in `theme.css`)
-- Nginx serving static files (Docker)
+- **Vue 3** (Composition API, `<script setup>`)
+- **Vite** — build tool and dev server
+- **Pinia** — state management
+- **Vue Router 4** — hash-based routing
+- **vue-i18n** — i18n with Spanish/English JSON files
+- CSS with custom properties (design tokens in `theme.css`, no preprocessor)
+- Nginx serving the compiled `dist/` (Docker production)
+
+## Setup (per machine)
+```bash
+cd thelibrary/
+npm install
+```
+
+## Development
+Started automatically by `docker compose up -d` (Vite dev server on port 5173, mapped to 3000).
+
+Manual dev server:
+```bash
+npm run dev
+```
+
+## Build & Test
+```bash
+npm run build    # compile to dist/
+npm run test     # Vitest unit tests
+```
 
 ## File Structure
-- `public/index.html` — Single HTML entry point, all screens rendered via JS
-- `public/js/app.js` — Main controller (~2000 lines): screen rendering, game flow, event handlers
-- `public/js/api.js` — Fetch wrapper for all backend API calls. `BASE_URL` configured here.
-- `public/js/state.js` — In-memory state + localStorage persistence, subscriber pattern
-- `public/js/book-animator.js` — 3D CSS book reveal animation
-- `public/js/dice-animator.js` — Dice roll animation with SVG
-- `public/css/theme.css` — Design tokens: colors, fonts (Cinzel, Lora), spacing
-- `public/css/layout.css` — Sidebar + main content grid
-- `public/css/components.css` — Buttons, modals, forms, cards
-- `public/css/book.css` — Book 3D transforms and animations
-- `public/css/dice.css` — Dice visualization styles
-- `public/css/print.css` — Print-ready journal export styles
+```
+src/
+├── main.js                    — App bootstrap (Vue, Pinia, Router, i18n, CSS)
+├── App.vue                    — Root component (init logic + <router-view>)
+├── router/index.js            — Routes per game mode
+├── stores/
+│   ├── game.js                — Game state (Pinia), port of state.js
+│   └── auth.js                — Auth state (Pinia)
+├── api/index.js               — Fetch client for Symfony backend
+├── animators/
+│   ├── book-animator.js       — 3D CSS book reveal animation
+│   └── dice-animator.js       — Dice roll animation
+├── i18n/index.js              — vue-i18n setup, setLocale()
+├── composables/
+│   └── useNavigation.js       — navigateToPhase(phase) → router.push
+├── assets/
+│   ├── css/                   — theme, layout, components, book, dice, print
+│   └── i18n/                  — es.json, en.json
+├── components/                — Reusable across game modes
+│   ├── BookReveal.vue          — Wraps book-animator.js
+│   ├── DiceRoll.vue            — Wraps dice-animator.js (reactive: watches result prop)
+│   ├── JournalEntry.vue        — Textarea + save button
+│   ├── AttributeSelector.vue   — Attribute buttons (chapter + epilogue with support)
+│   ├── PhaseStepper.vue        — Sidebar phase progress indicator
+│   ├── Modal.vue               — Generic modal (Teleport)
+│   └── MessageBar.vue          — Auto-dismissing error/info bar
+├── layout/
+│   ├── AppLayout.vue           — Sidebar + main content grid
+│   └── AppSidebar.vue          — Sidebar: character, attributes, steps, journal panel, exit
+├── features/auth/
+│   └── AuthSection.vue         — Auth bar + Login/Register/MySessions modals
+└── views/
+    ├── StartView.vue
+    └── aventura-rapida/
+        ├── PrologueView.vue
+        ├── ChapterView.vue
+        ├── EpilogueView.vue    — 3 sub-states: book-discovery | action | final
+        └── CompletedView.vue
+```
+
+## Routing
+Hash-based (`createWebHashHistory`). Phase → route mapping:
+- `prologue` → `/aventura-rapida/prologue`
+- `chapter_*` → `/aventura-rapida/chapter`
+- `epilogue_*` → `/aventura-rapida/epilogue`
+- `completed` → `/aventura-rapida/completed`
+
+Use `useNavigation().navigateToPhase(phase)` to navigate after API responses.
 
 ## Key Conventions
 - All code (variables, functions, comments) MUST be in English
-- No external dependencies — everything is vanilla JS/CSS
-- The frontend NEVER stores persistent data — all data flows through the backend API
-- Game state cached in localStorage for session recovery only
-- ES6 module imports (no bundler)
+- Game-specific translations use the i18n keys: `attributes.body`, `phases.chapter_1`, etc.
+- The frontend NEVER stores persistent data — all game state flows through the backend API
+- Game state cached in localStorage for session recovery (`biblioteca_game_id`, `biblioteca_game_state`)
+- Access token in memory only; refresh token in localStorage (`biblioteca_refresh_token`)
 
 ## CSS Architecture
-Design tokens flow: `theme.css` -> `layout.css` -> `components.css` -> feature CSS
-Use CSS custom properties (--var) defined in theme.css for all colors, spacing, and typography.
+Design tokens flow: `theme.css` → `layout.css` → `components.css` → feature CSS.
+Use CSS custom properties (--var) defined in `theme.css` for all colors, spacing, typography.
 
 ## API Communication
-All API calls go through `api.js`. Backend base URL is configured there.
+All API calls go through `src/api/index.js`. Backend base URL is hardcoded to `http://localhost:8080`.
 The backend provides oracle tables, game sessions, dice rolling, and journal persistence.
