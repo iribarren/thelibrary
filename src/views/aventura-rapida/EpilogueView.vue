@@ -17,7 +17,8 @@ const { navigateToPhase } = useNavigation()
 // Sub-state: 'book-discovery' | 'action' | 'final'
 const subState = computed(() => {
   const phase = gameStore.currentPhase
-  if (phase === 'epilogue_final') return 'final'
+  // Keep 'final' sub-screen after resolveFinalRoll advances phase to 'completed'
+  if (phase === 'epilogue_final' || phase === 'completed') return 'final'
   const hasBook = gameStore.game?.books?.some(b => b.phase?.startsWith('epilogue'))
   if (phase === 'epilogue_action_1' && !hasBook) return 'book-discovery'
   return 'action'
@@ -194,8 +195,7 @@ async function onEpilogueFinish() {
   try {
     const book = epilogueBook.value ?? newBook.value
     await API.saveJournalEntry(gameStore.gameId, postFinalJournal.value.trim(), book?.id ?? null)
-    const updatedGame = await API.fetchGame(gameStore.gameId)
-    gameStore.setGame(updatedGame)
+    // Phase is already 'completed' in the store (set by resolveFinalRoll via setGameWithRoll)
     navigateToPhase('completed')
   } catch (err) {
     postFinalErr.value = err.message
