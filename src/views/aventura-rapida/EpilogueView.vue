@@ -100,9 +100,11 @@ async function onPreJournalContinue() {
   try {
     const book = newBook.value ?? epilogueBook.value
     await API.saveJournalEntry(gameStore.gameId, preJournal.value.trim(), book?.id ?? null)
+    // Refresh game so epilogueBook computed picks up the newly generated book
     const updatedGame = await API.fetchGame(gameStore.gameId)
     gameStore.setGame(updatedGame)
-    navigateToPhase(updatedGame.current_phase)
+    // subState computed will switch to 'action' once game.books is populated
+    window.scrollTo(0, 0)
   } catch (err) {
     preJournalErr.value = err.message
   } finally {
@@ -145,9 +147,16 @@ async function onPostRollContinue() {
   try {
     const book = epilogueBook.value ?? newBook.value
     await API.saveJournalEntry(gameStore.gameId, postRollJournal.value.trim(), book?.id ?? null)
-    const updatedGame = await API.fetchGame(gameStore.gameId)
-    gameStore.setGame(updatedGame)
-    navigateToPhase(updatedGame.current_phase)
+    // Phase was already advanced by resolveEpilogueAction during the roll (stored via setGameWithRoll).
+    // Reset local state so the next action starts clean; subState computed drives the sub-screen switch.
+    showPostRoll.value     = false
+    actionRollResult.value = null
+    selectedAttr.value     = null
+    selectedSupport.value  = null
+    postRollJournal.value  = ''
+    actionError.value      = ''
+    postRollErr.value      = ''
+    window.scrollTo(0, 0)
   } catch (err) {
     postRollErr.value = err.message
   } finally {
