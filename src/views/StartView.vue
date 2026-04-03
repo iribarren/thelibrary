@@ -8,11 +8,13 @@ import * as API from '@/api/index.js'
 import AuthSection from '@/features/auth/AuthSection.vue'
 import MessageBar from '@/components/MessageBar.vue'
 import { setLocale, getCurrentLocale } from '@/i18n/index.js'
+import { useTheme } from '@/composables/useTheme.js'
 
 const { t } = useI18n()
 const router = useRouter()
 const gameStore = useGameStore()
 const { navigateToPhase } = useNavigation()
+const { applyRandomTheme, currentTheme } = useTheme()
 
 const newGameLoading     = ref(false)
 const continueLoading    = ref(false)
@@ -22,6 +24,7 @@ const games              = ref([])
 const gamesLoaded        = ref(false)
 
 onMounted(async () => {
+  if (!currentTheme.value) applyRandomTheme()
   try {
     games.value = await API.fetchGames()
   } catch { /* non-critical */ }
