@@ -10,7 +10,8 @@
     "continue_game": "Continue Game",
     "saved_games": "Saved Games",
     "no_name": "Unnamed",
-    "load_game_aria": "Load game of {name}"
+    "load_game_aria": "Load game of {name}",
+    "login_required": "Log in to play"
   },
   "phases": {
     "prologue": "Prologue",
