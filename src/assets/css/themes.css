@@ -1,0 +1,104 @@
+/* Smooth transition when switching themes */
+html {
+  transition: color 500ms ease, background-color 500ms ease,
+              border-color 500ms ease, box-shadow 500ms ease;
+}
+
+/* --- theme-fantasy: enchanted forest, deep greens, aged parchment --- */
+html.theme-fantasy {
+  --color-bg-deep:        #0d1f0f;
+  --color-bg-panel:       #1a2e1c;
+  --color-bg-panel-light: #223825;
+  --color-gold:           #7ec87e;
+  --color-gold-dark:      #3d7a40;
+  --color-gold-bright:    #a8e6a8;
+  --color-gold-glow:      rgba(126, 200, 126, 0.25);
+  --color-text-panel:     #b8d4b8;
+  --color-text-muted:     #7a9e7a;
+  --color-border-panel:   rgba(126, 200, 126, 0.3);
+  --color-border-paper:   #7ec87e;
+  --shadow-gold:          0 0 12px rgba(126, 200, 126, 0.4);
+}
+
+/* --- theme-cyberpunk: neon on black, electric magenta, terminal text --- */
+html.theme-cyberpunk {
+  --color-bg-deep:        #060612;
+  --color-bg-panel:       #0e0e24;
+  --color-bg-panel-light: #16163a;
+  --color-gold:           #e040fb;
+  --color-gold-dark:      #8b00b5;
+  --color-gold-bright:    #f06fff;
+  --color-gold-glow:      rgba(224, 64, 251, 0.25);
+  --color-text-panel:     #c8b0d8;
+  --color-text-muted:     #7a5a8a;
+  --color-border-panel:   rgba(224, 64, 251, 0.3);
+  --color-border-paper:   #e040fb;
+  --shadow-gold:          0 0 12px rgba(224, 64, 251, 0.5);
+  --font-heading:         'Courier New', Courier, monospace;
+  --font-body:            'Courier New', Courier, monospace;
+}
+
+/* --- theme-eldritch: cosmic horror, sickly green-grey, ancient stone --- */
+html.theme-eldritch {
+  --color-bg-deep:        #070d0a;
+  --color-bg-panel:       #0e1a14;
+  --color-bg-panel-light: #14231b;
+  --color-gold:           #5a8a6a;
+  --color-gold-dark:      #2d5038;
+  --color-gold-bright:    #7ab88a;
+  --color-gold-glow:      rgba(90, 138, 106, 0.2);
+  --color-paper:          #d4c9b0;
+  --color-text-panel:     #8a9e8a;
+  --color-text-muted:     #5a6e5a;
+  --color-border-panel:   rgba(90, 138, 106, 0.25);
+  --color-border-paper:   #5a8a6a;
+  --shadow-gold:          0 0 14px rgba(90, 138, 106, 0.35);
+}
+
+/* --- theme-supernatural: candlelit amber-red, blood and shadows, baroque --- */
+html.theme-supernatural {
+  --color-bg-deep:        #140505;
+  --color-bg-panel:       #221010;
+  --color-bg-panel-light: #2e1616;
+  --color-gold:           #cc4444;
+  --color-gold-dark:      #881e1e;
+  --color-gold-bright:    #e86868;
+  --color-gold-glow:      rgba(204, 68, 68, 0.25);
+  --color-text-panel:     #d4a0a0;
+  --color-text-muted:     #8a5858;
+  --color-border-panel:   rgba(204, 68, 68, 0.3);
+  --color-border-paper:   #cc4444;
+  --shadow-gold:          0 0 12px rgba(204, 68, 68, 0.45);
+}
+
+/* --- theme-romance: warm rose-blush, candlelight ivory, soft velvet --- */
+html.theme-romance {
+  --color-bg-deep:        #1a0d12;
+  --color-bg-panel:       #2e1820;
+  --color-bg-panel-light: #3e2030;
+  --color-gold:           #e88caa;
+  --color-gold-dark:      #9e4060;
+  --color-gold-bright:    #f4aac0;
+  --color-gold-glow:      rgba(232, 140, 170, 0.25);
+  --color-text-panel:     #d8b0c0;
+  --color-text-muted:     #9a6070;
+  --color-border-panel:   rgba(232, 140, 170, 0.3);
+  --color-border-paper:   #e88caa;
+  --shadow-gold:          0 0 12px rgba(232, 140, 170, 0.4);
+}
+
+/* --- theme-noir: ink-black, cold silver, rain-slicked streets --- */
+html.theme-noir {
+  --color-bg-deep:        #080808;
+  --color-bg-panel:       #111111;
+  --color-bg-panel-light: #1c1c1c;
+  --color-gold:           #9aabb4;
+  --color-gold-dark:      #4a5a64;
+  --color-gold-bright:    #c0d0d8;
+  --color-gold-glow:      rgba(154, 171, 180, 0.2);
+  --color-text-panel:     #a0b0b8;
+  --color-text-muted:     #5a6a72;
+  --color-border-panel:   rgba(154, 171, 180, 0.25);
+  --color-border-paper:   #9aabb4;
+  --shadow-gold:          0 0 10px rgba(154, 171, 180, 0.3);
+}

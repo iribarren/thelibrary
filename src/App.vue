@@ -1,17 +1,25 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from '@/stores/game.js'
 import { useAuthStore } from '@/stores/auth.js'
 import * as API from '@/api/index.js'
+import { useTheme } from '@/composables/useTheme.js'
 
 const { locale } = useI18n()
 const gameStore  = useGameStore()
 const authStore  = useAuthStore()
+const { applyGameTheme } = useTheme()
+
+watch(
+  () => [gameStore.game?.genre, gameStore.game?.epoch],
+  () => { applyGameTheme() }
+)
 
 onMounted(async () => {
   // Restore persisted game state from localStorage
   gameStore.hydrateFromStorage()
+  applyGameTheme()
 
   // Silent token refresh on page load
   const storedRefresh = authStore.getRefreshToken()

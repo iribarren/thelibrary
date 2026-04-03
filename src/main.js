@@ -5,6 +5,7 @@ import router from './router/index.js'
 import i18n from './i18n/index.js'
 
 import './assets/css/theme.css'
+import './assets/css/themes.css'
 import './assets/css/layout.css'
 import './assets/css/components.css'
 import './assets/css/book.css'
