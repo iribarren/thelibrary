@@ -10,7 +10,8 @@
     "continue_game": "Continuar Partida",
     "saved_games": "Partidas Guardadas",
     "no_name": "Sin nombre",
-    "load_game_aria": "Cargar partida de {name}"
+    "load_game_aria": "Cargar partida de {name}",
+    "login_required": "Inicia sesión para jugar"
   },
   "phases": {
     "prologue": "Prólogo",

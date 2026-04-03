@@ -1770,6 +1770,13 @@ select.form-control option {
   width: 100%;
 }
 
+.start-auth-hint {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
 .sidebar-actions {
   display: flex;
   flex-direction: column;

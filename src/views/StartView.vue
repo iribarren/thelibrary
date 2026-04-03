@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
 import { useGameStore } from '@/stores/game.js'
 import { useNavigation } from '@/composables/useNavigation.js'
 import * as API from '@/api/index.js'
@@ -12,6 +13,7 @@ import { useTheme } from '@/composables/useTheme.js'
 
 const { t } = useI18n()
 const router = useRouter()
+const authStore = useAuthStore()
 const gameStore = useGameStore()
 const { navigateToPhase } = useNavigation()
 const { applyRandomTheme, currentTheme } = useTheme()
@@ -101,7 +103,13 @@ function onLocaleChange(e) {
 
       <!-- Action buttons -->
       <div class="start-actions">
-        <button id="btn-new-game" class="btn btn-primary btn-lg" :disabled="newGameLoading" @click="onNewGame">
+        <button
+          id="btn-new-game"
+          class="btn btn-primary btn-lg"
+          :disabled="newGameLoading || !authStore.isAuthenticated"
+          :title="!authStore.isAuthenticated ? t('start.login_required') : undefined"
+          @click="onNewGame"
+        >
           <span class="btn-text">✦ {{ t('start.new_game') }}</span>
           <span v-if="newGameLoading" class="btn-spinner"><span class="spinner" /></span>
         </button>
@@ -110,13 +118,16 @@ function onLocaleChange(e) {
           v-if="gameStore.hasSavedGame"
           id="btn-continue-game"
           class="btn btn-secondary btn-lg"
-          :disabled="continueLoading"
+          :disabled="continueLoading || !authStore.isAuthenticated"
+          :title="!authStore.isAuthenticated ? t('start.login_required') : undefined"
           @click="onContinueGame"
         >
           <span class="btn-text">↩ {{ t('start.continue_game') }}</span>
           <span v-if="continueLoading" class="btn-spinner"><span class="spinner" /></span>
         </button>
       </div>
+
+      <p v-if="!authStore.isAuthenticated" class="start-auth-hint">{{ t('start.login_required') }}</p>
 
       <!-- Auth section -->
       <AuthSection />
