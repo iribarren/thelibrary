@@ -235,7 +235,7 @@ async function onNext() {
 
     <!-- Step 3: Attribute selection + Roll -->
     <Transition name="section-fade">
-    <div v-if="step === 'roll' || step === 'post-journal' || step === 'next'" id="chapter-roll-section" class="content-section">
+    <div v-if="step === 'roll' || step === 'support-title' || step === 'post-journal' || step === 'next'" id="chapter-roll-section" class="content-section">
       <h3 class="section-title">{{ t('chapter.roll_title') }}</h3>
       <MessageBar :message="rollError" />
       <p class="text-muted text-sm" style="margin-bottom:var(--space-4);">{{ t('chapter.roll_help') }}</p>
