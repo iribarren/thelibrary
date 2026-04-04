@@ -33,6 +33,11 @@ const nextLoading      = ref(false)
 const preJournal  = ref('')
 const postJournal = ref('')
 
+// Support title (weak_hit flow)
+const supportTitleInput = ref('')
+const supportTitleErr   = ref('')
+const supportTitleLoad  = ref(false)
+
 // Errors
 const bookError      = ref('')
 const preJournalErr  = ref('')
@@ -102,7 +107,30 @@ async function onRoll() {
 
 function onDiceComplete() {
   rollLoading.value = false
-  step.value = 'post-journal'
+  if (rollResult.value?.outcome === 'weak_hit') {
+    step.value = 'support-title'
+  } else {
+    step.value = 'post-journal'
+  }
+}
+
+async function onSubmitSupportTitle() {
+  supportTitleErr.value = ''
+  const title = supportTitleInput.value.trim()
+  if (!title) {
+    supportTitleErr.value = t('chapter.support_title_prompt')
+    return
+  }
+  supportTitleLoad.value = true
+  try {
+    const updatedGame = await API.saveSupportTitle(gameStore.gameId, selectedAttr.value, title)
+    gameStore.setGame(updatedGame)
+    step.value = 'post-journal'
+  } catch (err) {
+    supportTitleErr.value = err.message
+  } finally {
+    supportTitleLoad.value = false
+  }
 }
 
 async function onNext() {
@@ -123,16 +151,18 @@ async function onNext() {
       // Same route (/aventura-rapida/chapter) — Vue Router won't remount, reset manually
       const match = nextPhase.match(/^chapter_(\d+)$/)
       chapterNum.value    = match ? parseInt(match[1], 10) : chapterNum.value
-      step.value          = 'book'
-      book.value          = null
-      rollResult.value    = null
-      selectedAttr.value  = null
-      preJournal.value    = ''
-      postJournal.value   = ''
-      bookError.value     = ''
-      preJournalErr.value = ''
-      rollError.value     = ''
-      postJournalErr.value = ''
+      step.value            = 'book'
+      book.value            = null
+      rollResult.value      = null
+      selectedAttr.value    = null
+      preJournal.value      = ''
+      postJournal.value     = ''
+      supportTitleInput.value = ''
+      supportTitleErr.value = ''
+      bookError.value       = ''
+      preJournalErr.value   = ''
+      rollError.value       = ''
+      postJournalErr.value  = ''
       nextLoading.value   = false
       window.scrollTo(0, 0)
     } else {
@@ -215,6 +245,27 @@ async function onNext() {
 
       <div id="chapter-roll-result" style="margin-top:var(--space-5);">
         <DiceRoll :result="rollResult" context="chapter" @complete="onDiceComplete" />
+      </div>
+    </div>
+
+    <!-- Step 3b: Support title (weak_hit only) -->
+    <div v-if="step === 'support-title'" id="chapter-support-title-section" class="content-section">
+      <h3 class="section-title">{{ t('chapter.support_title_prompt') }}</h3>
+      <MessageBar :message="supportTitleErr" />
+      <p class="text-muted text-sm" style="margin-bottom:var(--space-3);">{{ t('chapter.support_title_placeholder') }}</p>
+      <input
+        v-model="supportTitleInput"
+        type="text"
+        maxlength="50"
+        class="form-input"
+        :placeholder="t('chapter.support_title_placeholder')"
+        style="width:100%;margin-bottom:var(--space-4);"
+      />
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn btn-primary" :disabled="supportTitleLoad" @click="onSubmitSupportTitle">
+          <span class="btn-text">{{ t('chapter.support_title_confirm') }}</span>
+          <span v-if="supportTitleLoad" class="btn-spinner"><span class="spinner" /></span>
+        </button>
       </div>
     </div>
 

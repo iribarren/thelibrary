@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
@@ -7,9 +7,9 @@ const props = defineProps({
   usedAttributes:    { type: Object, default: () => new Set() }, // Set<string>
   selectedAttribute: { type: String, default: null },
   // Support selection (epilogue only)
-  showSupport:          { type: Boolean, default: false },
-  supportUsed:          { type: Boolean, default: false },
-  selectedSupport:      { type: String, default: null },
+  showSupport:    { type: Boolean, default: false },
+  supportUsed:    { type: Boolean, default: false },
+  selectedSupport: { type: String, default: null },
 })
 const emit = defineEmits(['select', 'select-support'])
 
@@ -22,6 +22,19 @@ function getTotal(attr) {
 function isUsed(attr) {
   return props.usedAttributes.has(attr.type)
 }
+
+// The attribute object matching the current selection (used for contextual support prompt)
+const selectedAttrObj = computed(() =>
+  props.attributes.find(a => a.type === props.selectedAttribute) ?? null
+)
+
+// Show the contextual support prompt when: epilogue mode, attribute selected, it has support, not yet used
+const showSupportPrompt = computed(() =>
+  props.showSupport &&
+  !props.supportUsed &&
+  selectedAttrObj.value !== null &&
+  (selectedAttrObj.value.support ?? 0) > 0
+)
 </script>
 
 <template>
@@ -42,29 +55,25 @@ function isUsed(attr) {
       </button>
     </div>
 
-    <!-- Support selection (epilogue) -->
-    <div v-if="showSupport && !supportUsed && selectedAttribute" class="support-option" style="margin-top:var(--space-4);">
-      <p class="form-label" style="margin-bottom:var(--space-2);">{{ t('epilogue.support_title') }}</p>
-      <p class="text-muted text-sm" style="margin-bottom:var(--space-3);">{{ t('epilogue.support_help') }}</p>
-      <div class="attribute-selector" style="gap:var(--space-2);">
+    <!-- Contextual support prompt (epilogue): shown only for the selected attribute if it has support -->
+    <div v-if="showSupportPrompt" class="support-option" style="margin-top:var(--space-4);">
+      <p class="form-label" style="margin-bottom:var(--space-2);">
+        {{ t('epilogue.support_confirm_prompt', { title: selectedAttrObj.support_title || `+${selectedAttrObj.support}` }) }}
+      </p>
+      <p class="text-muted text-sm" style="margin-bottom:var(--space-3);">{{ t('epilogue.support_once_reminder') }}</p>
+      <div style="display:flex;gap:var(--space-2);">
         <button
-          :class="['btn-attribute', 'btn-sm', { selected: selectedSupport === 'none' }]"
-          style="min-width:80px;opacity:0.6;"
+          :class="['btn', 'btn-secondary', { 'btn-active': selectedSupport === selectedAttribute }]"
+          @click="$emit('select-support', selectedAttribute)"
+        >
+          {{ t('epilogue.use_support_btn') }}
+        </button>
+        <button
+          :class="['btn', 'btn-secondary', { 'btn-active': selectedSupport === null }]"
           @click="$emit('select-support', null)"
         >
-          <span class="attr-name">{{ t('epilogue.no_support_btn') }}</span>
+          {{ t('epilogue.no_support_btn') }}
         </button>
-        <template v-for="attr in attributes" :key="attr.type">
-          <button
-            v-if="(attr.support ?? 0) > 0"
-            :class="['btn-attribute', 'btn-sm', { selected: selectedSupport === attr.type }]"
-            style="min-width:80px;"
-            @click="$emit('select-support', attr.type)"
-          >
-            <span class="attr-name">{{ t(`attributes.${attr.type}`) }}</span>
-            <span class="attr-value">+{{ attr.support }}</span>
-          </button>
-        </template>
       </div>
     </div>
     <p v-else-if="showSupport && supportUsed" class="text-muted text-sm">

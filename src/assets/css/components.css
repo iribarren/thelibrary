@@ -502,6 +502,17 @@ select.form-control option {
   font-weight: 600;
 }
 
+.attr-pip-subtitle {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ============================================================
    BOOK CARD
    ============================================================ */

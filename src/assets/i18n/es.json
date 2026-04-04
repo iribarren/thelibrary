@@ -94,7 +94,10 @@
     "post_journal_help": "¿Cómo se resolvió el evento? Describe el desenlace según el resultado de los dados.",
     "post_journal_placeholder": "Y así quedó escrito",
     "next_chapter": "Capítulo {roman} ›",
-    "go_epilogue": "Ir al Epílogo ›"
+    "go_epilogue": "Ir al Epílogo ›",
+    "support_title_prompt": "¿Qué apoyo encontraste?",
+    "support_title_placeholder": "Mapa antiguo, daga de plata…",
+    "support_title_confirm": "Confirmar"
   },
   "epilogue": {
     "title": "Epílogo",
@@ -111,7 +114,10 @@
     "support_help": "Puedes añadir el valor de Apoyo de un atributo a esta tirada. Solo disponible una vez en todo el epílogo.",
     "support_used": "El apoyo ya ha sido usado en este epílogo.",
     "no_support": "Ningún atributo tiene apoyo disponible.",
-    "no_support_btn": "Sin apoyo",
+    "no_support_btn": "No usar apoyo",
+    "use_support_btn": "Usar apoyo",
+    "support_confirm_prompt": "¿Usar tu apoyo '{title}'? (+1)",
+    "support_once_reminder": "El apoyo solo puede usarse una vez en todo el epílogo.",
     "roll_btn": "Lanzar Dados",
     "select_attr_first": "Selecciona un atributo antes de lanzar.",
     "accumulated_points": "Puntos Superados Acumulados",

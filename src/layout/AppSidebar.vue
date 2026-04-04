@@ -136,6 +136,7 @@ function truncate(str, max) {
             <div class="attr-pip">
               <span class="attr-pip-label">{{ t('attribute_breakdown.support') }}</span>
               <span class="attr-pip-value">{{ attr.support ?? 0 }}</span>
+              <span v-if="(attr.support ?? 0) > 0 && attr.support_title" class="attr-pip-subtitle">{{ attr.support_title }}</span>
             </div>
           </div>
         </div>

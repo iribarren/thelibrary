@@ -94,7 +94,10 @@
     "post_journal_help": "How was the event resolved? Describe the outcome based on the dice result.",
     "post_journal_placeholder": "Fate has spoken...",
     "next_chapter": "Chapter {roman} ›",
-    "go_epilogue": "Go to Epilogue ›"
+    "go_epilogue": "Go to Epilogue ›",
+    "support_title_prompt": "What support did you find?",
+    "support_title_placeholder": "Ancient map, silver dagger…",
+    "support_title_confirm": "Confirm"
   },
   "epilogue": {
     "title": "Epilogue",
@@ -111,7 +114,10 @@
     "support_help": "You may add the Support value of an attribute to this roll. Only available once during the entire epilogue.",
     "support_used": "Support has already been used in this epilogue.",
     "no_support": "No attribute has support available.",
-    "no_support_btn": "No support",
+    "no_support_btn": "Do not use",
+    "use_support_btn": "Use support",
+    "support_confirm_prompt": "Use your support '{title}'? (+1)",
+    "support_once_reminder": "Support can only be used once during the entire epilogue.",
     "roll_btn": "Roll Dice",
     "select_attr_first": "Select an attribute before rolling.",
     "accumulated_points": "Accumulated Overcome Points",
