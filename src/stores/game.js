@@ -44,8 +44,6 @@ export const useGameStore = defineStore('game', () => {
     return match ? parseInt(match[1], 10) : null
   })
 
-  const hasSavedGame = computed(() => !!localStorage.getItem(STORAGE_KEY_GAME_ID))
-
   function getAttributeByType(type) {
     return game.value?.attributes?.find(a => a.type === type) ?? null
   }
@@ -97,15 +95,6 @@ export const useGameStore = defineStore('game', () => {
     _persistGameId(null)
   }
 
-  function hydrateFromStorage() {
-    const savedId    = localStorage.getItem(STORAGE_KEY_GAME_ID)
-    const savedState = localStorage.getItem(STORAGE_KEY_GAME_STATE)
-    if (savedId) gameId.value = savedId
-    if (savedState) {
-      try { game.value = JSON.parse(savedState) } catch { game.value = null }
-    }
-  }
-
   // ── Private helpers ────────────────────────────────────────
   function _persistGameId(id) {
     if (id) {
@@ -128,10 +117,10 @@ export const useGameStore = defineStore('game', () => {
     // Getters
     currentPhase, attributes, overcomeScore, supportUsed,
     usedChapterAttributes, usedEpilogueAttributes,
-    currentChapterNumber, currentEpilogueActionNumber, hasSavedGame,
+    currentChapterNumber, currentEpilogueActionNumber,
     getAttributeByType, getAttributeTotal,
     // Actions
     setGame, setGameWithRoll, setOracleTables, setCurrentBook,
-    clearCurrentBook, clearRollResult, resetState, hydrateFromStorage,
+    clearCurrentBook, clearRollResult, resetState,
   }
 })
