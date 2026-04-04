@@ -139,7 +139,7 @@ async function onSubmit() {
         </div>
         <div class="setting-random-row">
           <span class="text-muted text-sm">{{ t('prologue.or') }}</span>
-          <button class="btn btn-secondary btn-sm" :disabled="randomLoading" @click="onRandomSetting">
+          <button class="btn btn-secondary btn-sm" :class="{ loading: randomLoading }" :disabled="randomLoading" @click="onRandomSetting">
             <span class="btn-text">✦ {{ t('prologue.random') }}</span>
             <span v-if="randomLoading" class="btn-spinner"><span class="spinner" /></span>
           </button>
@@ -195,7 +195,7 @@ async function onSubmit() {
     </div>
 
     <div style="display:flex;justify-content:flex-end;padding-top:var(--space-4);">
-      <button class="btn btn-primary btn-lg" :disabled="loading" @click="onSubmit">
+      <button class="btn btn-primary btn-lg" :class="{ loading }" :disabled="loading" @click="onSubmit">
         <span class="btn-text">{{ t('prologue.start_adventure') }}</span>
         <span v-if="loading" class="btn-spinner"><span class="spinner" /></span>
       </button>

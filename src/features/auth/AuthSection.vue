@@ -150,7 +150,7 @@ function formatDate(dateStr) {
           <input id="auth-login-password" v-model="loginPassword" class="auth-form__input" type="password" required autocomplete="current-password" />
         </div>
         <MessageBar :message="loginError" />
-        <button class="btn btn-primary btn-full" type="submit" :disabled="loginLoading">
+        <button class="btn btn-primary btn-full" :class="{ loading: loginLoading }" type="submit" :disabled="loginLoading">
           <span class="btn-text">{{ t('auth.submit_login') }}</span>
           <span v-if="loginLoading" class="btn-spinner"><span class="spinner" /></span>
         </button>
@@ -174,7 +174,7 @@ function formatDate(dateStr) {
           <input id="auth-reg-confirm" v-model="regConfirm" class="auth-form__input" type="password" required autocomplete="new-password" />
         </div>
         <MessageBar :message="regError" />
-        <button class="btn btn-primary btn-full" type="submit" :disabled="regLoading">
+        <button class="btn btn-primary btn-full" :class="{ loading: regLoading }" type="submit" :disabled="regLoading">
           <span class="btn-text">{{ t('auth.submit_register') }}</span>
           <span v-if="regLoading" class="btn-spinner"><span class="spinner" /></span>
         </button>

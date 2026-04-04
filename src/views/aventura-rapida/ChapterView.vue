@@ -201,6 +201,7 @@ async function onNext() {
         <button
           v-if="!book"
           class="btn btn-secondary"
+          :class="{ loading: bookLoading }"
           :disabled="bookLoading"
           @click="onDiscoverBook"
         >
@@ -224,7 +225,7 @@ async function onNext() {
         :disabled="step !== 'pre-journal'"
       />
       <div v-if="step === 'pre-journal'" style="margin-top:var(--space-4);display:flex;justify-content:flex-end;">
-        <button class="btn btn-secondary" :disabled="preJournalLoading" @click="onPreJournalContinue">
+        <button class="btn btn-secondary" :class="{ loading: preJournalLoading }" :disabled="preJournalLoading" @click="onPreJournalContinue">
           <span class="btn-text">{{ t('chapter.continue') }}</span>
           <span v-if="preJournalLoading" class="btn-spinner"><span class="spinner" /></span>
         </button>
@@ -249,6 +250,7 @@ async function onNext() {
       <div style="margin-top:var(--space-4);">
         <button
           class="btn btn-primary"
+          :class="{ loading: rollLoading }"
           :disabled="!selectedAttr || rollLoading || step !== 'roll'"
           @click="onRoll"
         >
@@ -278,7 +280,7 @@ async function onNext() {
         style="width:100%;margin-bottom:var(--space-4);"
       />
       <div style="display:flex;justify-content:flex-end;">
-        <button class="btn btn-primary" :disabled="supportTitleLoad" @click="onSubmitSupportTitle">
+        <button class="btn btn-primary" :class="{ loading: supportTitleLoad }" :disabled="supportTitleLoad" @click="onSubmitSupportTitle">
           <span class="btn-text">{{ t('chapter.support_title_confirm') }}</span>
           <span v-if="supportTitleLoad" class="btn-spinner"><span class="spinner" /></span>
         </button>
@@ -303,7 +305,7 @@ async function onNext() {
     <!-- Step 5: Next button -->
     <Transition name="section-fade">
     <div v-if="step === 'post-journal'" style="display:flex;justify-content:flex-end;padding-top:var(--space-4);">
-      <button class="btn btn-primary btn-lg" :disabled="nextLoading" @click="onNext">
+      <button class="btn btn-primary btn-lg" :class="{ loading: nextLoading }" :disabled="nextLoading" @click="onNext">
         <span class="btn-text">
           {{ chapterNum < 3
             ? t('chapter.next_chapter', { roman: ({ 1: 'I', 2: 'II', 3: 'III' })[chapterNum + 1] || '' })
