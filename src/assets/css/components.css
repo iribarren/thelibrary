@@ -434,7 +434,8 @@ select.form-control option {
    ATTRIBUTE DISPLAY (sidebar)
    ============================================================ */
 
-.attribute-list {
+.attribute-list,
+#sidebar-attributes {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
