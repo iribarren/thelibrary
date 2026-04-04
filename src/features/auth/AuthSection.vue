@@ -82,8 +82,13 @@ async function onRegister() {
       try { authStore.setAuth(result.token, await API.fetchMe()) } catch { /* non-critical */ }
     }
     closeModal()
-  } catch {
-    regError.value = t('auth.error_generic')
+  } catch (err) {
+    const details = err.body?.error?.details
+    if (details) {
+      regError.value = Object.values(details).flat().join(' ')
+    } else {
+      regError.value = t('auth.error_generic')
+    }
   } finally {
     regLoading.value = false
   }
