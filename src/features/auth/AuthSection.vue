@@ -95,6 +95,7 @@ async function onRegister() {
 }
 
 function logout() {
+  gameStore.resetState()
   authStore.clearAuth()
 }
 

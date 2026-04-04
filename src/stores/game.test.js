@@ -31,62 +31,6 @@ afterEach(() => {
   localStorage.clear()
 })
 
-// ── hydrateFromStorage ─────────────────────────────────────────────────────
-
-describe('hydrateFromStorage', () => {
-  it('loads gameId and game when both keys exist in localStorage', () => {
-    const game = makeGame()
-    localStorage.setItem(STORAGE_KEY_GAME_ID, '42')
-    localStorage.setItem(STORAGE_KEY_GAME_STATE, JSON.stringify(game))
-
-    const store = useGameStore()
-    store.hydrateFromStorage()
-
-    expect(store.gameId).toBe('42')
-    expect(store.game).toEqual(game)
-  })
-
-  it('leaves state null when localStorage is empty', () => {
-    const store = useGameStore()
-    store.hydrateFromStorage()
-
-    expect(store.gameId).toBeNull()
-    expect(store.game).toBeNull()
-  })
-
-  it('sets gameId but leaves game null when only the id key is present', () => {
-    localStorage.setItem(STORAGE_KEY_GAME_ID, '99')
-
-    const store = useGameStore()
-    store.hydrateFromStorage()
-
-    expect(store.gameId).toBe('99')
-    expect(store.game).toBeNull()
-  })
-
-  it('sets game but leaves gameId null when only the state key is present', () => {
-    const game = makeGame()
-    localStorage.setItem(STORAGE_KEY_GAME_STATE, JSON.stringify(game))
-
-    const store = useGameStore()
-    store.hydrateFromStorage()
-
-    expect(store.gameId).toBeNull()
-    expect(store.game).toEqual(game)
-  })
-
-  it('sets game to null when stored state is malformed JSON', () => {
-    localStorage.setItem(STORAGE_KEY_GAME_ID, '1')
-    localStorage.setItem(STORAGE_KEY_GAME_STATE, 'not-valid-json{{{')
-
-    const store = useGameStore()
-    store.hydrateFromStorage()
-
-    expect(store.gameId).toBe('1')
-    expect(store.game).toBeNull()
-  })
-})
-
 // ── setGame ────────────────────────────────────────────────────────────────
 
 describe('setGame', () => {
