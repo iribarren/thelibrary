@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from '@/stores/game.js'
 import { useNavigation } from '@/composables/useNavigation.js'
@@ -13,6 +13,13 @@ import MessageBar from '@/components/MessageBar.vue'
 const { t } = useI18n()
 const gameStore = useGameStore()
 const { navigateToPhase } = useNavigation()
+
+function scrollToSection(id) {
+  nextTick(() => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
+}
 
 // Step tracking
 // 'book' | 'pre-journal' | 'roll' | 'post-journal' | 'next'
@@ -71,6 +78,7 @@ async function onDiscoverBook() {
 
 function onBookRevealComplete() {
   step.value = 'pre-journal'
+  scrollToSection('chapter-pre-journal-section')
 }
 
 async function onPreJournalContinue() {
@@ -83,6 +91,7 @@ async function onPreJournalContinue() {
   try {
     await API.saveJournalEntry(gameStore.gameId, preJournal.value.trim(), book.value?.id ?? null)
     step.value = 'roll'
+    scrollToSection('chapter-roll-section')
   } catch (err) {
     preJournalErr.value = err.message
   } finally {
@@ -109,8 +118,10 @@ function onDiceComplete() {
   rollLoading.value = false
   if (rollResult.value?.outcome === 'weak_hit') {
     step.value = 'support-title'
+    scrollToSection('chapter-support-title-section')
   } else {
     step.value = 'post-journal'
+    scrollToSection('chapter-post-journal-section')
   }
 }
 
@@ -164,7 +175,7 @@ async function onNext() {
       rollError.value       = ''
       postJournalErr.value  = ''
       nextLoading.value   = false
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
       navigateToPhase(nextPhase)
     }
@@ -201,6 +212,7 @@ async function onNext() {
     </div>
 
     <!-- Step 2: Pre-roll journal -->
+    <Transition name="section-fade">
     <div v-if="step !== 'book'" id="chapter-pre-journal-section" class="content-section">
       <h3 class="section-title">{{ t('chapter.pre_journal_title') }}</h3>
       <MessageBar :message="preJournalErr" />
@@ -218,8 +230,10 @@ async function onNext() {
         </button>
       </div>
     </div>
+    </Transition>
 
     <!-- Step 3: Attribute selection + Roll -->
+    <Transition name="section-fade">
     <div v-if="step === 'roll' || step === 'post-journal' || step === 'next'" id="chapter-roll-section" class="content-section">
       <h3 class="section-title">{{ t('chapter.roll_title') }}</h3>
       <MessageBar :message="rollError" />
@@ -247,8 +261,10 @@ async function onNext() {
         <DiceRoll :result="rollResult" context="chapter" @complete="onDiceComplete" />
       </div>
     </div>
+    </Transition>
 
     <!-- Step 3b: Support title (weak_hit only) -->
+    <Transition name="section-fade">
     <div v-if="step === 'support-title'" id="chapter-support-title-section" class="content-section">
       <h3 class="section-title">{{ t('chapter.support_title_prompt') }}</h3>
       <MessageBar :message="supportTitleErr" />
@@ -268,8 +284,10 @@ async function onNext() {
         </button>
       </div>
     </div>
+    </Transition>
 
     <!-- Step 4: Post-roll journal -->
+    <Transition name="section-fade">
     <div v-if="step === 'post-journal' || step === 'next'" id="chapter-post-journal-section" class="content-section">
       <h3 class="section-title">{{ t('chapter.post_journal_title') }}</h3>
       <MessageBar :message="postJournalErr" />
@@ -280,8 +298,10 @@ async function onNext() {
         :placeholder="t('chapter.post_journal_placeholder')"
       />
     </div>
+    </Transition>
 
     <!-- Step 5: Next button -->
+    <Transition name="section-fade">
     <div v-if="step === 'post-journal'" style="display:flex;justify-content:flex-end;padding-top:var(--space-4);">
       <button class="btn btn-primary btn-lg" :disabled="nextLoading" @click="onNext">
         <span class="btn-text">
@@ -292,5 +312,6 @@ async function onNext() {
         <span v-if="nextLoading" class="btn-spinner"><span class="spinner" /></span>
       </button>
     </div>
+    </Transition>
   </AppLayout>
 </template>

@@ -27,15 +27,19 @@ const journalError    = ref('')
 const settingPreview  = ref('')
 
 const oracleTables = computed(() => gameStore.oracleTables)
+const oraclesLoading = computed(() => gameStore.oracleTablesLoading)
 const genreOptions = computed(() => oracleTables.value?.genre ?? [])
 const epochOptions = computed(() => oracleTables.value?.epoch ?? [])
 
 onMounted(async () => {
   if (!gameStore.oracleTables) {
+    gameStore.setOracleTablesLoading(true)
     try {
       gameStore.setOracleTables(await API.fetchOracleTables())
     } catch (err) {
       settingError.value = t('errors.load_oracle', { message: err.message })
+    } finally {
+      gameStore.setOracleTablesLoading(false)
     }
   }
 })
@@ -111,10 +115,13 @@ async function onSubmit() {
     <div class="content-section">
       <h3 class="section-title">{{ t('prologue.setting_title') }}</h3>
       <MessageBar :message="settingError" />
+      <p v-if="oraclesLoading" class="text-muted text-sm" style="margin-bottom:var(--space-3);">
+        {{ t('prologue.loading_oracles') }}
+      </p>
       <div class="setting-grid">
         <div class="form-group">
           <label class="form-label" for="select-genre">{{ t('prologue.genre_label') }}</label>
-          <select id="select-genre" v-model="genre" class="form-control" @change="updateSettingPreview">
+          <select id="select-genre" v-model="genre" class="form-control" :disabled="oraclesLoading" @change="updateSettingPreview">
             <option value="">{{ t('prologue.genre_placeholder') }}</option>
             <option v-for="opt in genreOptions" :key="opt.value" :value="opt.value" :title="opt.hint">
               {{ opt.value }}
@@ -123,7 +130,7 @@ async function onSubmit() {
         </div>
         <div class="form-group">
           <label class="form-label" for="select-epoch">{{ t('prologue.epoch_label') }}</label>
-          <select id="select-epoch" v-model="epoch" class="form-control" @change="updateSettingPreview">
+          <select id="select-epoch" v-model="epoch" class="form-control" :disabled="oraclesLoading" @change="updateSettingPreview">
             <option value="">{{ t('prologue.epoch_placeholder') }}</option>
             <option v-for="opt in epochOptions" :key="opt.value" :value="opt.value" :title="opt.hint">
               {{ opt.value }}

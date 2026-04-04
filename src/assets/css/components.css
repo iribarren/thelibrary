@@ -1800,3 +1800,19 @@ select.form-control option {
   gap: var(--space-3);
   justify-content: flex-end;
 }
+
+/* ============================================================
+   SECTION FADE TRANSITION (Vue <Transition name="section-fade">)
+   ============================================================ */
+
+.section-fade-enter-active {
+  animation: fadeInUp 0.4s ease;
+}
+
+.section-fade-leave-active {
+  transition: opacity var(--transition-fast);
+}
+
+.section-fade-leave-to {
+  opacity: 0;
+}
