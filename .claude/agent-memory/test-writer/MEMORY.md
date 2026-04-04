@@ -1,0 +1,2 @@
+- [Frontend Test Conventions](project_test_conventions.md) — Vitest+@vue/test-utils, co-located test files, i18n plugin pattern, store setup with Pinia
+- [Oracles API Testing Infrastructure](project_oracles_api_testing.md) — PHPUnit 12 conventions, purgeDatabase gotcha (no refresh_tokens table), Doctrine manipulation pattern for deterministic tests

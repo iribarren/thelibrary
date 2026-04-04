@@ -286,6 +286,31 @@ describe('getAttributeByType', () => {
   })
 })
 
+// ── supportUsed ──────────────────────────────────────────────────────────
+
+describe('supportUsed', () => {
+  it('returns false when support_used is false on the game', () => {
+    const store = useGameStore()
+    store.setGame(makeGame({ support_used: false }))
+
+    expect(store.supportUsed).toBe(false)
+  })
+
+  it('returns true when support_used is true on the game', () => {
+    const store = useGameStore()
+    store.setGame(makeGame({ support_used: true }))
+
+    expect(store.supportUsed).toBe(true)
+  })
+
+  it('returns false when game is null', () => {
+    const store = useGameStore()
+    // game stays null
+
+    expect(store.supportUsed).toBe(false)
+  })
+})
+
 // ── getAttributeTotal ────────────────────────────────────────────────────
 
 describe('getAttributeTotal', () => {
