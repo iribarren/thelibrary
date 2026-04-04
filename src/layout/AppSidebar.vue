@@ -62,7 +62,7 @@ function cancelExit() {
 function exitGame() {
   gameStore.resetState()
   showExitConfirm.value = false
-  router.push('/')
+  router.replace('/')
 }
 
 function onLocaleChange(e) {

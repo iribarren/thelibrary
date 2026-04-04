@@ -1795,6 +1795,40 @@ select.form-control option {
   gap: var(--space-2);
 }
 
+.exit-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.exit-confirm-box {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border-panel);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7) var(--space-8);
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.exit-confirm-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  color: var(--color-gold);
+  margin: 0;
+}
+
+.exit-confirm-text {
+  margin: 0;
+}
+
 .exit-confirm-actions {
   display: flex;
   gap: var(--space-3);
