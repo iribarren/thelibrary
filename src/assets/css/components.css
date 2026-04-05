@@ -1777,9 +1777,102 @@ select.form-control option {
 /* --- Button group containers --- */
 .start-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-3);
   width: 100%;
+}
+
+/* Info button — circular icon button beside the main action */
+.btn-info {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold-dark);
+  background: transparent;
+  color: var(--color-gold);
+  font-size: var(--fs-lg);
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn-info:hover {
+  background: rgba(201, 168, 76, 0.12);
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.25);
+}
+
+/* Info modal content layout */
+.info-modal-content {
+  padding: var(--space-2) 0;
+}
+
+.info-modal-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  color: var(--color-gold);
+  margin: 0 0 var(--space-6);
+  text-align: center;
+}
+
+.info-modal-section {
+  margin-bottom: var(--space-6);
+}
+
+.info-modal-section h3 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  color: var(--color-gold-dark);
+  margin: 0 0 var(--space-3);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  padding-bottom: var(--space-2);
+}
+
+.info-modal-section h4 {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text-soft);
+  margin: var(--space-4) 0 var(--space-1);
+}
+
+.info-modal-section p {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.info-modal-pdf {
+  text-align: center;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+/* Start footer: locale switcher + PDF link row */
+.start-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  justify-content: center;
+}
+
+.start-footer-pdf-link {
+  font-size: var(--fs-sm);
+  color: var(--color-gold-dark);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.start-footer-pdf-link:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 .start-auth-hint {

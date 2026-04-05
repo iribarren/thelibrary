@@ -11,7 +11,22 @@
     "saved_games": "Saved Games",
     "no_name": "Unnamed",
     "load_game_aria": "Load game of {name}",
-    "login_required": "Log in to play"
+    "login_required": "Log in to play",
+    "rules_pdf": "Download rules as PDF"
+  },
+  "info_modal": {
+    "button_aria": "How to play",
+    "title": "How to Play The Library",
+    "premise_heading": "The Premise",
+    "premise": "The Library is a solo journaling roleplaying game where imagination is paramount. The player enters an imaginary library that represents their mind: the books are their memories.",
+    "phases_heading": "Game Structure",
+    "prologue_heading": "Prologue",
+    "prologue": "The player chooses the setting (genre and era) and describes in the journal what the library of their mind looks like.",
+    "chapters_heading": "Chapters (I, II and III)",
+    "chapters": "The player explores books in the library. Based on the book's characteristics, they imagine a past situation, choose how they faced it using one of their attributes (Body, Mind or Social) and roll the dice. Depending on the result — Full Success, Partial Success or Failure — they write the outcome in the journal. Each attribute can only be used once across all chapters.",
+    "epilogue_heading": "Epilogue",
+    "epilogue": "The player discovers a final book representing the challenge they face in the present. They perform three actions combining attributes and an optional support to accumulate Overcome Points. Finally, those points are compared to a 2d10 roll to decide their fate: triumph, bittersweet, or defeat.",
+    "pdf_link": "Download full rules as PDF"
   },
   "phases": {
     "prologue": "Prologue",
