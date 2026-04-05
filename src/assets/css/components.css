@@ -1809,7 +1809,7 @@ select.form-control option {
   background: var(--color-bg-panel);
   border: 1px solid var(--color-border-panel);
   border-radius: var(--radius-lg);
-  padding: var(--space-7) var(--space-8);
+  padding: var(--space-8);
   max-width: 380px;
   width: 90%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
