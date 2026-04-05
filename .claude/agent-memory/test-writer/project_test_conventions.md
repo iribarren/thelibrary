@@ -16,5 +16,7 @@ type: project
 
 **Component mount helper pattern**: Define a `mountSelector(props)` wrapper around `mount()` that spreads required defaults so individual tests only specify what they care about.
 
-**Why:** Established by existing `src/stores/game.test.js` and `src/stores/auth.test.js` files.
+**View component mocking**: When mounting a view that imports `@/api/index.js` and `@/composables/useNavigation.js`, mock both with `vi.mock()` at the top of the test file. Stub `AppLayout` with `{ template: '<div><slot /></div>' }` and `MessageBar` with `{ template: '<div />' }` via `global.stubs`. This avoids router setup (useNavigation calls useRouter) while still exercising the real component template and store integration.
+
+**Why:** Established by existing `src/stores/game.test.js`, `src/stores/auth.test.js`, and `src/views/aventura-rapida/PrologueView.test.js`.
 **How to apply:** Follow these patterns exactly when adding new test files — no separate `__tests__/` directory, no Jest-style manual mocks.
