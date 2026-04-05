@@ -11,7 +11,22 @@
     "saved_games": "Partidas Guardadas",
     "no_name": "Sin nombre",
     "load_game_aria": "Cargar partida de {name}",
-    "login_required": "Inicia sesión para jugar"
+    "login_required": "Inicia sesión para jugar",
+    "rules_pdf": "Descargar reglas en PDF"
+  },
+  "info_modal": {
+    "button_aria": "Cómo se juega",
+    "title": "Cómo se juega La Biblioteca",
+    "premise_heading": "La Premisa",
+    "premise": "La Biblioteca es un juego de rol solitario de tipo diario en el que prima la imaginación. El jugador accede a una biblioteca imaginaria que representa su mente: los libros son sus recuerdos.",
+    "phases_heading": "Estructura de la Partida",
+    "prologue_heading": "Prólogo",
+    "prologue": "El jugador decide la ambientación de la partida (género y época) y describe en el diario cómo es la biblioteca que representa su mente.",
+    "chapters_heading": "Capítulos (I, II y III)",
+    "chapters": "El jugador explora libros de la biblioteca. A partir de las características del libro, imagina una situación de su pasado, elige cómo se enfrentó a ella usando uno de sus atributos (Cuerpo, Mente o Social) y lanza los dados. Según el resultado —Éxito Total, Éxito Parcial o Fracaso— escribe el desenlace en el diario. Cada atributo solo puede usarse una vez durante los capítulos.",
+    "epilogue_heading": "Epílogo",
+    "epilogue": "El jugador descubre un último libro que representa el reto que afronta en el presente. Realiza tres acciones combinando atributos y un apoyo opcional para acumular Puntos Superados. Finalmente, compara esos puntos con una tirada de 2d10 para decidir su destino: triunfo, claroscuros o derrota.",
+    "pdf_link": "Descargar reglas completas en PDF"
   },
   "phases": {
     "prologue": "Prólogo",
