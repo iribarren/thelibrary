@@ -62,7 +62,7 @@ function cancelExit() {
 function exitGame() {
   gameStore.resetState()
   showExitConfirm.value = false
-  router.push('/')
+  router.replace('/')
 }
 
 function onLocaleChange(e) {
@@ -174,16 +174,18 @@ function truncate(str, max) {
     </div>
 
     <!-- Exit confirmation overlay -->
-    <div v-if="showExitConfirm" class="exit-confirm-overlay">
-      <div class="exit-confirm-box">
-        <p class="exit-confirm-title">{{ t('modal.exit_title') }}</p>
-        <p class="exit-confirm-text text-muted text-sm">{{ t('modal.exit_text') }}</p>
-        <div class="exit-confirm-actions">
-          <button class="btn btn-danger btn-sm" @click="exitGame">{{ t('modal.exit_no_save') }}</button>
-          <button class="btn btn-ghost btn-sm" @click="cancelExit">{{ t('modal.cancel') }}</button>
+    <Teleport to="body">
+      <div v-if="showExitConfirm" class="exit-confirm-overlay">
+        <div class="exit-confirm-box">
+          <p class="exit-confirm-title">{{ t('modal.exit_title') }}</p>
+          <p class="exit-confirm-text text-muted text-sm">{{ t('modal.exit_text') }}</p>
+          <div class="exit-confirm-actions">
+            <button class="btn btn-danger btn-sm" @click="exitGame">{{ t('modal.exit_no_save') }}</button>
+            <button class="btn btn-ghost btn-sm" @click="cancelExit">{{ t('modal.cancel') }}</button>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
 
     <!-- Journal panel -->
     <div :class="['journal-panel', { open: journalOpen }]" id="journal-panel">

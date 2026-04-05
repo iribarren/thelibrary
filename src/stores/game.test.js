@@ -255,6 +255,40 @@ describe('supportUsed', () => {
   })
 })
 
+// ── setOracleTablesLoading ───────────────────────────────────────────────────
+
+describe('setOracleTablesLoading', () => {
+  it('has an initial value of false', () => {
+    const store = useGameStore()
+
+    expect(store.oracleTablesLoading).toBe(false)
+  })
+
+  it('sets oracleTablesLoading to true', () => {
+    const store = useGameStore()
+    store.setOracleTablesLoading(true)
+
+    expect(store.oracleTablesLoading).toBe(true)
+  })
+
+  it('sets oracleTablesLoading back to false', () => {
+    const store = useGameStore()
+    store.setOracleTablesLoading(true)
+    store.setOracleTablesLoading(false)
+
+    expect(store.oracleTablesLoading).toBe(false)
+  })
+
+  it('is not cleared by resetState', () => {
+    const store = useGameStore()
+    store.setOracleTablesLoading(true)
+    store.setGame(makeGame())
+    store.resetState()
+
+    expect(store.oracleTablesLoading).toBe(true)
+  })
+})
+
 // ── getAttributeTotal ────────────────────────────────────────────────────
 
 describe('getAttributeTotal', () => {

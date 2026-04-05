@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from '@/stores/game.js'
 import { useNavigation } from '@/composables/useNavigation.js'
@@ -13,6 +13,13 @@ import MessageBar from '@/components/MessageBar.vue'
 const { t } = useI18n()
 const gameStore = useGameStore()
 const { navigateToPhase } = useNavigation()
+
+function scrollToSection(id) {
+  nextTick(() => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
+}
 
 // Sub-state: 'book-discovery' | 'action' | 'final'
 const subState = computed(() => {
@@ -89,6 +96,7 @@ async function onDiscoverEpilogueBook() {
 
 function onBookRevealComplete() {
   showPreJournal.value = true
+  scrollToSection('epilogue-pre-journal-section')
 }
 
 async function onPreJournalContinue() {
@@ -105,7 +113,7 @@ async function onPreJournalContinue() {
     const updatedGame = await API.fetchGame(gameStore.gameId)
     gameStore.setGame(updatedGame)
     // subState computed will switch to 'action' once game.books is populated
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (err) {
     preJournalErr.value = err.message
   } finally {
@@ -136,6 +144,7 @@ async function onRollAction() {
 function onActionDiceComplete() {
   actionLoading.value = false
   showPostRoll.value = true
+  scrollToSection('epilogue-post-roll-section')
 }
 
 async function onPostRollContinue() {
@@ -157,7 +166,7 @@ async function onPostRollContinue() {
     postRollJournal.value  = ''
     actionError.value      = ''
     postRollErr.value      = ''
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (err) {
     postRollErr.value = err.message
   } finally {
@@ -183,6 +192,7 @@ function onFinalDiceComplete() {
   finalLoading.value = false
   showPostFinal.value = true
   showFinishButton.value = true
+  scrollToSection('epilogue-post-final-section')
 }
 
 async function onEpilogueFinish() {
@@ -217,7 +227,7 @@ async function onEpilogueFinish() {
         <h3 class="section-title">{{ t('epilogue.book_title') }}</h3>
         <MessageBar :message="bookError" />
         <div id="epilogue-book-container">
-          <button v-if="!bookRevealed" class="btn btn-secondary" :disabled="bookLoading" @click="onDiscoverEpilogueBook">
+          <button v-if="!bookRevealed" class="btn btn-secondary" :class="{ loading: bookLoading }" :disabled="bookLoading" @click="onDiscoverEpilogueBook">
             <span class="btn-text">📖 {{ t('epilogue.discover_epilogue_btn') }}</span>
             <span v-if="bookLoading" class="btn-spinner"><span class="spinner" /></span>
           </button>
@@ -225,18 +235,20 @@ async function onEpilogueFinish() {
         </div>
       </div>
 
-      <div v-if="showPreJournal" class="content-section">
+      <Transition name="section-fade">
+      <div v-if="showPreJournal" id="epilogue-pre-journal-section" class="content-section">
         <h3 class="section-title">{{ t('epilogue.pre_journal_title') }}</h3>
         <MessageBar :message="preJournalErr" />
         <p class="text-muted text-sm" style="margin-bottom:var(--space-3);">{{ t('epilogue.pre_journal_help') }}</p>
         <textarea v-model="preJournal" class="journal-textarea" :placeholder="t('epilogue.pre_journal_placeholder')" />
         <div style="display:flex;justify-content:flex-end;padding-top:var(--space-4);">
-          <button class="btn btn-primary" :disabled="preJournalLoad" @click="onPreJournalContinue">
+          <button class="btn btn-primary" :class="{ loading: preJournalLoad }" :disabled="preJournalLoad" @click="onPreJournalContinue">
             <span class="btn-text">{{ t('chapter.continue') }}</span>
             <span v-if="preJournalLoad" class="btn-spinner"><span class="spinner" /></span>
           </button>
         </div>
       </div>
+      </Transition>
     </template>
 
     <!-- ── Epilogue action sub-screen ────────────────────── -->
@@ -290,6 +302,7 @@ async function onEpilogueFinish() {
         <div style="margin-top:var(--space-4);">
           <button
             class="btn btn-primary"
+            :class="{ loading: actionLoading }"
             :disabled="!selectedAttr || actionLoading || showPostRoll"
             @click="onRollAction"
           >
@@ -309,18 +322,20 @@ async function onEpilogueFinish() {
       </div>
 
       <!-- Post-roll journal -->
-      <div v-if="showPostRoll" class="content-section">
+      <Transition name="section-fade">
+      <div v-if="showPostRoll" id="epilogue-post-roll-section" class="content-section">
         <h3 class="section-title">{{ t('epilogue.post_roll_title') }}</h3>
         <MessageBar :message="postRollErr" />
         <p class="text-muted text-sm" style="margin-bottom:var(--space-3);">{{ t('epilogue.post_roll_help') }}</p>
         <textarea v-model="postRollJournal" class="journal-textarea" :placeholder="t('epilogue.post_roll_placeholder')" />
         <div style="display:flex;justify-content:flex-end;padding-top:var(--space-4);">
-          <button class="btn btn-primary" :disabled="postRollLoad" @click="onPostRollContinue">
+          <button class="btn btn-primary" :class="{ loading: postRollLoad }" :disabled="postRollLoad" @click="onPostRollContinue">
             <span class="btn-text">{{ t('chapter.continue') }}</span>
             <span v-if="postRollLoad" class="btn-spinner"><span class="spinner" /></span>
           </button>
         </div>
       </div>
+      </Transition>
     </template>
 
     <!-- ── Final roll sub-screen ──────────────────────────── -->
@@ -339,7 +354,7 @@ async function onEpilogueFinish() {
             <span class="overcome-label">{{ t('epilogue.your_score') }}</span>
             <span class="overcome-value" style="font-size:var(--fs-3xl);">{{ gameStore.overcomeScore }}</span>
           </div>
-          <button class="btn btn-primary btn-lg" :disabled="finalLoading || !!finalRollResult" @click="onRollFinal">
+          <button class="btn btn-primary btn-lg" :class="{ loading: finalLoading }" :disabled="finalLoading || !!finalRollResult" @click="onRollFinal">
             <span class="btn-text">⚄ {{ t('epilogue.final_roll_btn') }}</span>
             <span v-if="finalLoading" class="btn-spinner"><span class="spinner" /></span>
           </button>
@@ -355,19 +370,23 @@ async function onEpilogueFinish() {
       </div>
 
       <!-- Post-final journal -->
-      <div v-if="showPostFinal" class="content-section">
+      <Transition name="section-fade">
+      <div v-if="showPostFinal" id="epilogue-post-final-section" class="content-section">
         <h3 class="section-title">{{ t('epilogue.post_final_title') }}</h3>
         <MessageBar :message="postFinalErr" />
         <p class="text-muted text-sm" style="margin-bottom:var(--space-3);">{{ t('epilogue.post_final_help') }}</p>
         <textarea v-model="postFinalJournal" class="journal-textarea" :placeholder="t('epilogue.post_final_placeholder')" />
       </div>
+      </Transition>
 
+      <Transition name="section-fade">
       <div v-if="showFinishButton" style="display:flex;justify-content:flex-end;padding-top:var(--space-4);">
-        <button class="btn btn-primary btn-lg" :disabled="postFinalLoad" @click="onEpilogueFinish">
+        <button class="btn btn-primary btn-lg" :class="{ loading: postFinalLoad }" :disabled="postFinalLoad" @click="onEpilogueFinish">
           <span class="btn-text">{{ t('epilogue.view_summary') }}</span>
           <span v-if="postFinalLoad" class="btn-spinner"><span class="spinner" /></span>
         </button>
       </div>
+      </Transition>
     </template>
   </AppLayout>
 </template>

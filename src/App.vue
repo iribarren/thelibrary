@@ -54,11 +54,14 @@ onMounted(async () => {
   }
 
   // Pre-load oracle tables in background
-  try {
-    if (!gameStore.oracleTables) {
+  if (!gameStore.oracleTables) {
+    gameStore.setOracleTablesLoading(true)
+    try {
       gameStore.setOracleTables(await API.fetchOracleTables())
+    } catch { /* retried when prologue loads */ } finally {
+      gameStore.setOracleTablesLoading(false)
     }
-  } catch { /* retried when prologue loads */ }
+  }
 
   document.documentElement.lang = locale.value
 })

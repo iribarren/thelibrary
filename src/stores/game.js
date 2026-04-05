@@ -6,11 +6,12 @@ const STORAGE_KEY_GAME_STATE = 'biblioteca_game_state'
 
 export const useGameStore = defineStore('game', () => {
   // ── State ──────────────────────────────────────────────────
-  const gameId       = ref(null)
-  const game         = ref(null)
-  const oracleTables = ref(null)
-  const currentBook  = ref(null)
-  const rollResult   = ref(null)
+  const gameId            = ref(null)
+  const game              = ref(null)
+  const oracleTables      = ref(null)
+  const oracleTablesLoading = ref(false)
+  const currentBook       = ref(null)
+  const rollResult        = ref(null)
 
   // ── Getters ────────────────────────────────────────────────
   const currentPhase = computed(() => game.value?.current_phase ?? null)
@@ -74,6 +75,10 @@ export const useGameStore = defineStore('game', () => {
     oracleTables.value = tables
   }
 
+  function setOracleTablesLoading(val) {
+    oracleTablesLoading.value = val
+  }
+
   function setCurrentBook(book) {
     currentBook.value = book
   }
@@ -113,14 +118,14 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     // State
-    gameId, game, oracleTables, currentBook, rollResult,
+    gameId, game, oracleTables, oracleTablesLoading, currentBook, rollResult,
     // Getters
     currentPhase, attributes, overcomeScore, supportUsed,
     usedChapterAttributes, usedEpilogueAttributes,
     currentChapterNumber, currentEpilogueActionNumber,
     getAttributeByType, getAttributeTotal,
     // Actions
-    setGame, setGameWithRoll, setOracleTables, setCurrentBook,
+    setGame, setGameWithRoll, setOracleTables, setOracleTablesLoading, setCurrentBook,
     clearCurrentBook, clearRollResult, resetState,
   }
 })

@@ -60,6 +60,7 @@ function onLocaleChange(e) {
         <button
           id="btn-new-game"
           class="btn btn-primary btn-lg"
+          :class="{ loading: newGameLoading }"
           :disabled="newGameLoading || !authStore.isAuthenticated"
           :title="!authStore.isAuthenticated ? t('start.login_required') : undefined"
           @click="onNewGame"
