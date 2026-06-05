@@ -49,7 +49,7 @@ src/
 ├── composables/
 │   └── useNavigation.js       — navigateToPhase(phase) → router.push
 ├── assets/
-│   ├── css/                   — theme, layout, components, book, dice, print
+│   ├── css/                   — theme, themes (genre/epoch variants), layout, components, book, dice, print
 │   └── i18n/                  — es.json, en.json
 ├── components/                — Reusable across game modes
 │   ├── BookReveal.vue          — Wraps book-animator.js

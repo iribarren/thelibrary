@@ -1,33 +1,52 @@
 # The Library
 
-Frontend for "The Library" — a solo tabletop RPG journal game. Vanilla JavaScript single-page application served by Nginx.
+Frontend for "The Library" — a solo tabletop RPG journal game. Vue 3 SPA served by Vite dev server (dev) or Nginx (production).
 
 ## Tech Stack
 
-- **Vanilla JS** (ES6 modules) — no framework, no build tools, no bundler
-- **CSS** custom properties design system
-- **Nginx** (Docker) for static file serving
+- **Vue 3** (Composition API, `<script setup>`)
+- **Vite** — build tool and dev server
+- **Pinia** — state management
+- **Vue Router 4** — hash-based routing
+- **vue-i18n** — Spanish / English localisation
+- **CSS** custom properties design system (no preprocessor)
 
 ## Architecture
 
 | Path | Description |
 |------|-------------|
-| `public/index.html` | SPA entry point |
-| `public/js/app.js` | Main game controller |
-| `public/js/api.js` | REST API client (communicates with oracles-api backend) |
-| `public/js/state.js` | Client-side state management + localStorage persistence |
-| `public/js/book-animator.js` | 3D book reveal animation |
-| `public/js/dice-animator.js` | Dice roll visualization |
-| `public/css/theme.css` | Design tokens: colors, fonts, spacing |
-| `public/css/layout.css` | Sidebar + main content grid |
-| `public/css/components.css` | Buttons, modals, forms, cards |
-| `public/css/book.css` | Book 3D transforms and animations |
-| `public/css/dice.css` | Dice visualization styles |
-| `public/css/print.css` | Print-ready journal export styles |
+| `src/main.js` | App bootstrap (Vue, Pinia, Router, i18n, CSS) |
+| `src/App.vue` | Root component with `<router-view>` |
+| `src/router/index.js` | Hash-based routes per game phase |
+| `src/stores/game.js` | Game state (Pinia) |
+| `src/stores/auth.js` | Auth state (Pinia) |
+| `src/api/index.js` | Fetch API client for the Symfony backend |
+| `src/animators/` | 3D book reveal + dice roll animations |
+| `src/components/` | Reusable Vue components |
+| `src/views/` | Page-level views per game phase |
+| `src/assets/css/` | theme, layout, components, book, dice, print, themes |
+| `src/i18n/index.js` | vue-i18n setup + locale switching |
+| `public/_headers` | Cloudflare Pages security headers (CSP, HSTS) |
+
+> The `public/` directory also contains legacy vanilla JS files from a prior architecture. They are **not used** by the active build — the active source is entirely under `src/`.
 
 ## Development
 
-Served at `http://localhost:3000` via Docker. Files in `public/` are volume-mounted for live editing — changes are reflected immediately without rebuilding the container.
+Started automatically by `docker compose up -d` from the workspace root (Vite dev server on port 5173, mapped to 3000). Changes to `src/` files are reflected via HMR immediately.
+
+```bash
+# Manual dev server (outside Docker)
+cd thelibrary/
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build    # compile to dist/
+npm run test     # Vitest unit tests
+```
 
 ## Dependency
 
