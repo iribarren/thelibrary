@@ -7,6 +7,7 @@ import {
   createGame,
   submitPrologue,
   rollChapter,
+  advanceEpilogue,
   login,
   register,
 } from './index.js'
@@ -202,6 +203,16 @@ describe('endpoint wrappers', () => {
     const [url, options] = fetch.mock.calls[0]
     expect(url).toBe(`${BASE}/api/game/g1/chapter/roll`)
     expect(JSON.parse(options.body)).toEqual({ attribute: 'mind' })
+  })
+
+  it('advanceEpilogue posts to the epilogue advance endpoint', async () => {
+    fetch.mockResolvedValueOnce(jsonResponse({ current_phase: 'epilogue_action_2' }))
+
+    await advanceEpilogue('g1')
+
+    const [url, options] = fetch.mock.calls[0]
+    expect(url).toBe(`${BASE}/api/game/g1/epilogue/advance`)
+    expect(options.method).toBe('POST')
   })
 
   it('login posts credentials to the auth endpoint', async () => {

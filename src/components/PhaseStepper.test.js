@@ -42,18 +42,19 @@ describe('PhaseStepper', () => {
     expect(statusOf(wrapper, 'completed')).toBe('pending')
   })
 
-  it('shows "epilogue_book" as active during epilogue_action_1 when no epilogue book exists yet', () => {
+  it('shows "epilogue_book" as active at the epilogue_book phase', () => {
     const game = useGameStore()
-    game.game = { current_phase: 'epilogue_action_1', books: [] }
+    game.game = { current_phase: 'epilogue_book' }
     const wrapper = mountStepper()
 
+    expect(statusOf(wrapper, 'chapter_3')).toBe('completed')
     expect(statusOf(wrapper, 'epilogue_book')).toBe('active')
     expect(statusOf(wrapper, 'epilogue_action_1')).toBe('pending')
   })
 
-  it('shows "epilogue_action_1" as active once the epilogue book has been generated', () => {
+  it('shows "epilogue_action_1" as active at the epilogue_action_1 phase', () => {
     const game = useGameStore()
-    game.game = { current_phase: 'epilogue_action_1', books: [{ phase: 'epilogue_action_1' }] }
+    game.game = { current_phase: 'epilogue_action_1' }
     const wrapper = mountStepper()
 
     expect(statusOf(wrapper, 'epilogue_book')).toBe('completed')

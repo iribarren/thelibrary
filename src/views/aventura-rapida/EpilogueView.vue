@@ -22,12 +22,13 @@ function scrollToSection(id) {
 }
 
 // Sub-state: 'book-discovery' | 'action' | 'final'
+// Driven by the real backend phase: the epilogue opens on its own 'epilogue_book'
+// phase, then the three action phases, then the final roll.
 const subState = computed(() => {
   const phase = gameStore.currentPhase
+  if (phase === 'epilogue_book') return 'book-discovery'
   // Keep 'final' sub-screen after resolveFinalRoll advances phase to 'completed'
   if (phase === 'epilogue_final' || phase === 'completed') return 'final'
-  const hasBook = gameStore.game?.books?.some(b => b.phase?.startsWith('epilogue'))
-  if (phase === 'epilogue_action_1' && !hasBook) return 'book-discovery'
   return 'action'
 })
 
@@ -109,10 +110,10 @@ async function onPreJournalContinue() {
   try {
     const book = newBook.value ?? epilogueBook.value
     await API.saveJournalEntry(gameStore.gameId, preJournal.value.trim(), book?.id ?? null)
-    // Refresh game so epilogueBook computed picks up the newly generated book
-    const updatedGame = await API.fetchGame(gameStore.gameId)
+    // Advance from the book step (epilogue_book) to the first action.
+    const updatedGame = await API.advanceEpilogue(gameStore.gameId)
     gameStore.setGame(updatedGame)
-    // subState computed will switch to 'action' once game.books is populated
+    // subState computed switches to 'action' once the phase is epilogue_action_1
     window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (err) {
     preJournalErr.value = err.message
@@ -157,8 +158,11 @@ async function onPostRollContinue() {
   try {
     const book = epilogueBook.value ?? newBook.value
     await API.saveJournalEntry(gameStore.gameId, postRollJournal.value.trim(), book?.id ?? null)
-    // Phase was already advanced by resolveEpilogueAction during the roll (stored via setGameWithRoll).
-    // Reset local state so the next action starts clean; subState computed drives the sub-screen switch.
+    // Advance now that this action's journal is saved (the roll itself does NOT
+    // advance the phase). For action 3 this moves to epilogue_final.
+    const updatedGame = await API.advanceEpilogue(gameStore.gameId)
+    gameStore.setGame(updatedGame)
+    // Reset local state so the next action starts clean; subState drives the sub-screen switch.
     showPostRoll.value     = false
     actionRollResult.value = null
     selectedAttr.value     = null

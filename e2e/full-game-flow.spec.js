@@ -98,12 +98,12 @@ test('a full play-through runs from the prologue to a completed game', async ({ 
   await page.fill('#epilogue-pre-journal-section textarea', 'The end draws near.')
   await page.locator('#epilogue-pre-journal-section button').click()
 
-  // Three epilogue actions, each with a distinct attribute. The first two show a
-  // post-roll journal; the third advances the phase to the final roll directly.
+  // Three epilogue actions, each with a distinct attribute. Every action now
+  // prompts its own post-roll journal before advancing (the 3rd advances to final).
   await expect(page.locator('button.btn-attribute').first()).toBeVisible({ timeout: 20_000 })
   await playEpilogueActionWithJournal(page, 'body')
   await playEpilogueActionWithJournal(page, 'mind')
-  await selectAttributeAndRoll(page, 'social') // 3rd action → straight to the final screen
+  await playEpilogueActionWithJournal(page, 'social')
 
   // Final roll closes the game.
   await expect(page.locator('.card button.btn-lg')).toBeVisible({ timeout: 20_000 })

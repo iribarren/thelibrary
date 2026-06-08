@@ -11,7 +11,7 @@ vi.mock('@/composables/useNavigation.js', () => ({ useNavigation: () => ({ navig
 vi.mock('@/api/index.js', () => ({
   generateEpilogueBook: vi.fn(),
   saveJournalEntry: vi.fn(),
-  fetchGame: vi.fn(),
+  advanceEpilogue: vi.fn(),
   rollEpilogueAction: vi.fn(),
   rollEpilogueFinal: vi.fn(),
 }))
@@ -52,15 +52,15 @@ beforeEach(() => {
 // ── subState selection ────────────────────────────────────────────────────────
 
 describe('EpilogueView — sub-state selection', () => {
-  it('shows the book-discovery screen at epilogue_action_1 with no epilogue book', () => {
-    seed({ current_phase: 'epilogue_action_1', books: [] })
+  it('shows the book-discovery screen at the epilogue_book phase', () => {
+    seed({ current_phase: 'epilogue_book', books: [] })
     const wrapper = mountEpilogue()
     expect(wrapper.find('#epilogue-book-container').exists()).toBe(true)
     expect(wrapper.find('.attr-stub').exists()).toBe(false)
   })
 
-  it('shows the action screen once an epilogue book exists', () => {
-    seed({ current_phase: 'epilogue_action_1', books: [{ phase: 'epilogue_action_1' }], overcome_score: 0 })
+  it('shows the action screen at the epilogue_action_1 phase', () => {
+    seed({ current_phase: 'epilogue_action_1', books: [{ phase: 'epilogue_book' }], overcome_score: 0 })
     const wrapper = mountEpilogue()
     expect(wrapper.find('.attr-stub').exists()).toBe(true)
     expect(wrapper.find('#epilogue-book-container').exists()).toBe(false)
@@ -78,12 +78,15 @@ describe('EpilogueView — sub-state selection', () => {
 
 describe('EpilogueView — action roll', () => {
   it('shows the post-roll journal after the dice resolve and requires content to continue', async () => {
-    seed({ current_phase: 'epilogue_action_1', books: [{ phase: 'epilogue_action_1' }], overcome_score: 0 })
+    seed({ current_phase: 'epilogue_action_1', books: [{ phase: 'epilogue_book' }], overcome_score: 0 })
+    // The roll does NOT advance the phase any more (backend change).
     API.rollEpilogueAction.mockResolvedValueOnce({
-      game: { id: 'g1', current_phase: 'epilogue_action_2', attributes: [], roll_results: [], overcome_score: 3, books: [{ phase: 'epilogue_action_1' }] },
+      game: { id: 'g1', current_phase: 'epilogue_action_1', attributes: [], roll_results: [], overcome_score: 3, books: [{ phase: 'epilogue_book' }] },
       roll_result: { outcome: 'hit' },
     })
     API.saveJournalEntry.mockResolvedValue({})
+    // Advancing happens on the post-roll continue.
+    API.advanceEpilogue.mockResolvedValue({ id: 'g1', current_phase: 'epilogue_action_2', attributes: [], roll_results: [], overcome_score: 3, books: [{ phase: 'epilogue_book' }] })
 
     const wrapper = mountEpilogue()
     await wrapper.find('.attr-stub').trigger('click')             // select attribute
@@ -93,16 +96,18 @@ describe('EpilogueView — action roll', () => {
 
     expect(wrapper.find('#epilogue-post-roll-section').exists()).toBe(true)
 
-    // Empty post-roll journal is blocked.
+    // Empty post-roll journal is blocked (no save, no advance).
     await wrapper.find('#epilogue-post-roll-section button').trigger('click')
     await flushPromises()
     expect(API.saveJournalEntry).not.toHaveBeenCalled()
+    expect(API.advanceEpilogue).not.toHaveBeenCalled()
 
-    // With content it saves.
+    // With content it saves the journal and then advances the epilogue.
     await wrapper.find('#epilogue-post-roll-section textarea').setValue('After the action')
     await wrapper.find('#epilogue-post-roll-section button').trigger('click')
     await flushPromises()
     expect(API.saveJournalEntry).toHaveBeenCalledTimes(1)
+    expect(API.advanceEpilogue).toHaveBeenCalledWith('g1')
   })
 })
 
