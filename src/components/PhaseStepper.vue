@@ -14,15 +14,9 @@ const STEPS = [
   'epilogue_final', 'completed',
 ]
 
-const currentVisualStep = computed(() => {
-  const phase = gameStore.currentPhase
-  if (!phase) return null
-  if (phase === 'epilogue_action_1') {
-    const hasBook = gameStore.game?.books?.some(b => b.phase?.startsWith('epilogue'))
-    return hasBook ? 'epilogue_action_1' : 'epilogue_book'
-  }
-  return phase
-})
+// The backend phase maps 1:1 to a visual step, including the dedicated
+// 'epilogue_book' phase.
+const currentVisualStep = computed(() => gameStore.currentPhase)
 
 const steps = computed(() => {
   const currentIdx = STEPS.indexOf(currentVisualStep.value)

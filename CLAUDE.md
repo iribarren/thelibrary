@@ -28,9 +28,27 @@ npm run dev
 
 ## Build & Test
 ```bash
-npm run build    # compile to dist/
-npm run test     # Vitest unit tests
+npm run build     # compile to dist/
+npm run test      # Vitest unit + component tests (jsdom)
+npm run test:e2e  # Playwright end-to-end tests (needs the full stack running)
 ```
+
+### Testing strategy
+The frontend has two test layers, mirroring the backend's Behat behaviour suite:
+
+- **Vitest** (`src/**/*.test.js`) — unit/component tests for pure logic
+  (`dice-animator`, `composables`, `api`), Pinia stores, components and views.
+  Game-mechanic assertions MUST match the backend contract pinned by Behat
+  (e.g. `getEffectText` for an epilogue action reflects overcome +3/+2/+1, per
+  `oracles-api/features/epilogue.feature` and `GameEngine::resolveEpilogueAction`).
+- **Playwright** (`e2e/*.spec.js`, config in `playwright.config.js`) — drives the
+  real UI against the running stack. Specs map to the Behat features (auth, full
+  play-through, game lifecycle, session resume). Because backend dice are random,
+  E2E asserts **structure and phase progression, not specific roll values**.
+  Uses the system Google Chrome via `channel: 'chrome'` (no browser download).
+
+When changing game logic, update BOTH the Vitest assertion and (if the flow
+changes) the Playwright spec, keeping them consistent with the Behat contract.
 
 ## File Structure
 ```

@@ -106,6 +106,7 @@ export const advanceChapter      = (gameId) => post(`/api/game/${gameId}/chapter
 
 // ── Epilogue ───────────────────────────────────────────────────
 export const generateEpilogueBook = (gameId) => post(`/api/game/${gameId}/epilogue/book`, {})
+export const advanceEpilogue      = (gameId) => post(`/api/game/${gameId}/epilogue/advance`, {})
 export const rollEpilogueAction   = (gameId, attribute, supportAttribute = null) =>
   post(`/api/game/${gameId}/epilogue/action`, { attribute, support_attribute: supportAttribute })
 export const rollEpilogueFinal    = (gameId) => post(`/api/game/${gameId}/epilogue/final`, {})

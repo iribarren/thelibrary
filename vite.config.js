@@ -19,5 +19,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    // Vitest only runs the unit/component suite under src/.
+    // The Playwright end-to-end specs live in e2e/ and run via `npm run test:e2e`.
+    include: ['src/**/*.test.js'],
   },
 })
