@@ -45,8 +45,39 @@ npm run dev
 
 ```bash
 npm run build    # compile to dist/
-npm run test     # Vitest unit tests
 ```
+
+## Testing
+
+Two layers protect the base behaviour as new features land — the UI-side
+counterpart to the backend's Behat suite:
+
+- **Vitest** (unit + component) — pure logic (`dice-animator`, composables, API
+  client), Pinia stores, components and views. Fast, no backend required.
+
+  ```bash
+  npm run test        # single run
+  npm run test:watch  # watch mode
+  ```
+
+  Tests for game mechanics assert the **backend contract** (e.g. the epilogue
+  action awards +3 / +2 / +1 to the overcome score, matching
+  `GameEngine` / `oracles-api/features/epilogue.feature`).
+
+- **Playwright** (end-to-end) — drives the real UI against the running stack and
+  mirrors the Behat scenarios at the flow level (registration/login, a full
+  play-through prologue → chapters → epilogue → completed, session listing and
+  resume). E2E tests assert structure and phase progression, not specific dice
+  values (the backend rolls are random).
+
+  ```bash
+  # Requires the full stack running and the system Google Chrome.
+  docker compose up -d            # from the workspace root
+  npx playwright install chromium # first time only (or rely on `channel: 'chrome'`)
+  npm run test:e2e
+  ```
+
+  Override the target with `E2E_BASE_URL` (defaults to `http://localhost:3000`).
 
 ## Dependency
 

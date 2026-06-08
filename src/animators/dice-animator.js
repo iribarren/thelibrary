@@ -250,7 +250,7 @@ function buildComparison(roll, context, extraData) {
 
   // Die 1
   const c1 = roll.challenge_die_1 ?? 0;
-  const c1Beats = c1 >= actionScore;
+  const c1Beats = dieBeatsAction(c1, actionScore);
   const die1 = makeEl('div', 'comparison-die');
   const die1val = makeEl('div', `comparison-die-value ${c1Beats ? 'beats' : 'loses'}`, String(c1));
   const die1label = makeEl('div', 'comparison-die-label', 'd10');
@@ -260,7 +260,7 @@ function buildComparison(roll, context, extraData) {
 
   // Die 2
   const c2 = roll.challenge_die_2 ?? 0;
-  const c2Beats = c2 >= actionScore;
+  const c2Beats = dieBeatsAction(c2, actionScore);
   const die2 = makeEl('div', 'comparison-die');
   const die2val = makeEl('div', `comparison-die-value ${c2Beats ? 'beats' : 'loses'}`, String(c2));
   const die2label = makeEl('div', 'comparison-die-label', 'd10');
@@ -442,7 +442,7 @@ function jumpToFinal(refs, roll, context, extraData) {
  *
  * We want to end on the front face (rotateX=0, rotateY=0 relative to final spin).
  */
-function getD6LandRotation(value) {
+export function getD6LandRotation(value) {
   // The keyframe ends at rotateX(720) rotateY(720).
   // Both are multiples of 360, so the front face (translateZ(40px)) faces the camera.
   // The front face always holds the finalValue (set in buildD6Group).
@@ -459,7 +459,7 @@ function markActiveFace(cube, value) {
   }
 }
 
-function clampD6(v) {
+export function clampD6(v) {
   // Keep values in 1-6 range for dummy face values
   return ((((v - 1) % 6) + 6) % 6) + 1;
 }
@@ -471,10 +471,19 @@ function clampD6(v) {
 const REEL_SLOT_HEIGHT = 28; // matches .d10-reel-num height in CSS
 
 /**
+ * A challenge die "beats" the action when it is greater than or equal to the
+ * action score (mirrors GameEngine: a die >= action_score is a failure for the
+ * player). Exported for unit testing.
+ */
+export function dieBeatsAction(die, actionScore) {
+  return die >= actionScore;
+}
+
+/**
  * Build an array of numbers for the reel.
  * 'extra' slots before and after the final value for the spinning effect.
  */
-function buildReelNumbers(finalValue, extra) {
+export function buildReelNumbers(finalValue, extra) {
   const nums = [];
   for (let i = extra; i >= 1; i--) {
     nums.push(randomD10(finalValue));
@@ -499,7 +508,7 @@ function randomD10(exclude) {
  * Center of window: 40px. Center of desired slot: (extra * slotHeight) + 14px.
  * So: top = -(extra * 28) + (40 - 14) = -(extra * 28) + 26
  */
-function getReelFinalOffset(value) {
+export function getReelFinalOffset(value) {
   // We always put the final value at index 9 (extra=9)
   const extra = 9;
   return -(extra * REEL_SLOT_HEIGHT) + (40 - REEL_SLOT_HEIGHT / 2);
@@ -566,7 +575,7 @@ function applyD10Color(wrap, value, actionScore, context, extraData) {
     ? (extraData.overcome_score ?? 0)
     : actionScore;
 
-  if (value >= score) {
+  if (dieBeatsAction(value, score)) {
     wrap.classList.add('beats-action');
   } else {
     wrap.classList.add('loses-to-action');
@@ -577,16 +586,20 @@ function applyD10Color(wrap, value, actionScore, context, extraData) {
 // Content helpers
 // ============================================================
 
-function getEffectText(outcome, context) {
+// Exported so it can be unit-tested against the backend contract (GameEngine).
+// The numbers MUST match GameEngine::resolveEpilogueAction (overcome score +3/+2/+1)
+// and resolveFinalRoll (no points awarded — the final roll only decides the ending).
+export function getEffectText(outcome, context) {
   if (context === 'epilogue_final') {
-    if (outcome === 'hit')      return 'Triunfo completo. +3 puntos de superación.';
-    if (outcome === 'weak_hit') return 'Éxito parcial. +2 puntos de superación.';
-    return 'Derrota. +1 punto de superación.';
+    // The final roll awards no points; it only resolves how the story closes.
+    if (outcome === 'hit')      return 'Triunfo completo. Tu puntuación supera ambos dados.';
+    if (outcome === 'weak_hit') return 'Éxito parcial. Tu puntuación supera un dado.';
+    return 'Derrota. Tu puntuación no supera ningún dado.';
   }
   if (context === 'epilogue_action') {
-    if (outcome === 'hit')      return 'Éxito total. Ganas 2 puntos superados.';
-    if (outcome === 'weak_hit') return 'Éxito parcial. Ganas 1 punto superado.';
-    return 'Fracaso. No ganas puntos superados en esta acción.';
+    if (outcome === 'hit')      return 'Éxito total. Ganas 3 puntos de superación.';
+    if (outcome === 'weak_hit') return 'Éxito parcial. Ganas 2 puntos de superación.';
+    return 'Fracaso. Aun así ganas 1 punto de superación.';
   }
   // chapter
   if (outcome === 'hit')      return 'Éxito total. Tu Trasfondo aumenta en 1.';
